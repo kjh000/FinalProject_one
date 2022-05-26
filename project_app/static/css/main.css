@@ -1,0 +1,5 @@
+@charset "UTF-8";
+body{background-color:  rgba(247, 247, 247);}
+h1{text-align: center; margin-bottom: 50px;}
+.center{position: absolute; top: 45%; left: 60%; transform: translate(-50%,-50%);}
+select{ height: 3.8em; width: 400px; outline: none; box-shadow: 3px 3px 10px #566270; border: none; color: #4F86C6;}
