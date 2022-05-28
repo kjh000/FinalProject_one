@@ -22,7 +22,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.mainFunc),
     path('show/', views.findFunc),
-    path('test/', views.testFunc),
     path('member/',include('project_app.urls')),
+    path('show/craw', views.craw_gmarket),
     
 ]

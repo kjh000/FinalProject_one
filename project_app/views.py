@@ -52,4 +52,12 @@ def insertFunc(request):
         
     else:
         print('error')
-        
+
+def craw_gmarket(request):
+    url = "https://browse.gmarket.co.kr/search?keyword="
+    url + "&t=s"
+    
+    item = request.GET.get("item")
+    # print(irum)
+    return render(request,'test2.html',{'item':item})
+    
