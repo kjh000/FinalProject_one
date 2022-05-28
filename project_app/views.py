@@ -2,20 +2,36 @@ from django.shortcuts import render
 import pandas as pd
 import numpy as np
 import csv
+import sys
+import os
 # Create your views here.
 
 def mainFunc(request):
     return render(request,'main.html')
 
 def findFunc(request):
-    return render(request,'finder.html')
+    if request.method =='GET':
+        print('GET 요청 처리')
+        
+        irum = request.GET.get("itemSelect")
+        print(irum)
+        dfl = df[df['품목'].str.contains(irum) & df['지역'].str.contains("종로구 내수동")& df['마트이름'].str.contains("지씨마트")].values.tolist()
+        dfl.sort(key=lambda x : x[5])
+        return render(request,'finder.html',{'dfl':dfl, 'irum':irum})
+    else:
+        print('error')
 
 
 names = ['지역','마켓종류','마트이름','분류','품목','가격']
-# local = pd.read_csv('static/csvs/local_mart.csv',header = None,names = names)
-local = pd.read_csv(r'C:/Users/kjh1/git/FinalProject_one/project_app/static/csvs/local_mart.csv',header = None,names = names)
 
-gmarket = pd.read_csv(r'C:/Users/kjh1/git/FinalProject_one/project_app/static/csvs/gmarket.csv',header = None,names=['품목','가격'])
+dir = os.path.dirname(os.path.realpath(__file__))
+
+ldata = dir + '\static\csvs\local_mart.csv'
+gdata = dir + '\static\csvs\gmarket.csv'
+
+local = pd.read_csv(ldata, header = None,names = names)
+gmarket = pd.read_csv(gdata, header = None,names=['품목','가격'])
+
 df = pd.DataFrame(local)
 df_g = pd.DataFrame(gmarket)
 
