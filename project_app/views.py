@@ -5,17 +5,19 @@ import csv
 import sys
 import os
 # Create your views here.
+items=['간장', '계란', '고추장', '과자', '기저귀', '껌', '냉동만두', '된장', '두루마리화장지', '두부', '라면', '마요네즈', '맛김', '맛살', '맥주', '밀가루', '분유', '사이다', '생리대', '생수', '샴푸', '설탕', '세탁세제', '소주', '시리얼', '식용유', '쌈장', '아이스크림', '어묵', '오렌지주스', '우유', '즉석밥', '참기름', '참치 캔', '커피', '케첩', '콜라', '햄']
 
 def mainFunc(request):
-    return render(request,'main.html')
+    item=items
+    return render(request,'main.html', {'item':item})
 
 def findFunc(request):
     if request.method =='GET':
         print('GET 요청 처리')
         
-        irum = request.GET.get("itemSelect")
+        irum = request.GET.get("searchInput")
         print(irum)
-        dfl = df[df['품목'].str.contains(irum) & df['지역'].str.contains("종로구 내수동")& df['마트이름'].str.contains("지씨마트")].values.tolist()
+        dfl = df[df['분류'].str.contains(irum) & df['지역'].str.contains("종로구")].values.tolist()
         dfl.sort(key=lambda x : x[5])
         return render(request,'finder.html',{'dfl':dfl, 'irum':irum})
     else:
