@@ -16,10 +16,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from project_app import views
+from django.urls.conf import include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.mainFunc),
     path('show/', views.findFunc),
+    path('test/', views.testFunc),
+    path('member/',include('project_app.urls')),
     
 ]
