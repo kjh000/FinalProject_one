@@ -88,16 +88,19 @@
 							</tr>
 						</thead>
 						<tbody>
+							{% for df in dfl %}
 							<tr>
-								<th>종로구 내수동</th>
-								<td>일반 슈퍼마켓</td>
-								<td>지씨마트</td>
-								<td>라면</td>
-								<td>[농심]신라면</td>
-								<td>4140원</td>
+								<th>{{df.0}}</th>
+								<td>{{df.1}}</td>
+								<td>{{df.2}}</td>
+								<td>{{df.3}}</td>
+								<td>{{df.4}}</td>
+								<td>{{df.5}}</td>
 							</tr>
+							{% endfor %}
 						</tbody>
 					</table>
+					
 				</div>
             </div>
             <div class="col-md-3">
