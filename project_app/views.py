@@ -53,11 +53,34 @@ def insertFunc(request):
     else:
         print('error')
 
-def craw_gmarket(request):
-    url = "https://browse.gmarket.co.kr/search?keyword="
-    url + "&t=s"
-    
-    item = request.GET.get("item")
-    # print(irum)
-    return render(request,'test2.html',{'item':item})
+# def craw_gmarket(request):
+#     url = "https://browse.gmarket.co.kr/search?keyword="
+#     url + "&t=s"
+#
+#     item = request.GET.get("item")
+#     # print(irum)
+#     return render(request,'test2.html',{'item':item})
+
+def basketFunc(request):
+    print('request GET : ', request.GET)
+    name = request.GET.get("name")
+    price = request.GET.get("price")
+    print(price)
+    print(name)
+    product = {"name" : name, "price" : price}
+    productList = []
+    if "prod" in request.session: #session이 생성되어있지 않으면, 즉 첫 번째 상품이 아니라면 productList에 상품 정보 저장하기
+        productList = request.session["prod"]
+        productList.append(product)
+        request.session["prod"] = productList
+        print("세션 유효 시간 : ", request.session.get_expiry_age())
+    else: #session에 shop이 없으면 productList에 상품을 넣고 request.session에 "shop" 이라는 키를 만든다
+        productList.append(product)
+        request.session["prod"] = productList    
+    # return HttpResponseRedirect("basket")
+    print(productList)
+    context = {} #html에 보낼 용도
+    context['products'] = request.session['prod']
+    request.session.set_expiry(10) #세션 시간 결정
+    return render(request, 'basket.html', context)
     

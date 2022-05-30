@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<h1>장바구니</h1>
+{{product}}
+<table border="1">
+	<tr>
+		<th>상품명</th>
+		<th>가격</th>
+	</tr>
+	{% if products %}
+		{% for pro in products %}
+		<tr>
+			<td>{{pro.name}}</td>
+			<td>{{pro.price}}</td>
+		</tr>
+		{% endfor %}
+	{% else %}
+		<tr>
+			<td colspan="2">자료없음</td>
+		</tr>
+	{% endif %}
+</table>
+<br>
+<h1>세션</h1>
+세션 유효 시간 : {{ request.session.get_expiry_age }} <br>
+현재 사용자에게 할당된 세선 id : {{request.session.session_key}} <br>
+</body>
+</html>

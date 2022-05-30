@@ -23,6 +23,6 @@ urlpatterns = [
     path('', views.mainFunc),
     path('show/', views.findFunc),
     path('member/',include('project_app.urls')),
-    path('show/craw', views.craw_gmarket),
-    
+    # path('show/craw', views.craw_gmarket),
+    path('show/basket', views.basketFunc),
 ]

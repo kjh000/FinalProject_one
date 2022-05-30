@@ -89,12 +89,13 @@
 						<tbody>
 							{% for df in dfl %}
 							<tr>
-								<form action="craw" method="get">
+								<form action="basket" method="get">
 									<td>{{df.0}}</td>
 									<td>{{df.2}}</td>
 									<td>{{df.4}}</td>
-									<td><input type="hidden" name="item" id = "item" value = "{{df.4}}" readonly/></td>
+									<td><input type="hidden" name="name" id="name" value="{{df.4}}" readonly/></td>
 									<td>{{df.5}}</td>
+									<td><input type="hidden" name="price" id="price" value="{{df.5}}" readonly/></td>
 									<td><button class="btn btn-primary" type="submit">구매</button></td>
 								</form>
 							</tr>
@@ -110,19 +111,11 @@
                         <h3>Basket</h3>
                     </div>
                     <div class="order">
-						<h5>rder</h5>
+						<h5>order</h5>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-<script type="text/javascript">
-document.querySelector('#btn').addEventListener('click',function(){
-	return 
-})
-</script>
-</body>
-</html>
-
 </body>
 </html>
