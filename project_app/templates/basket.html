@@ -29,5 +29,28 @@
 <h1>세션</h1>
 세션 유효 시간 : {{ request.session.get_expiry_age }} <br>
 현재 사용자에게 할당된 세선 id : {{request.session.session_key}} <br>
+
+<br />
+<br />
+
+<h2>g마켓 최저가</h2>
+<table border="1">
+	<tr>
+		<th>상품명</th>
+		<th>가격</th>
+	</tr>
+	{% if g_products %}
+		{% for gpro in g_products %}
+		<tr>
+			<td>{{gpro.name}}</td>
+			<td>{{gpro.price}}</td>
+		</tr>
+		{% endfor %}
+	{% else %}
+		<tr>
+			<td colspan="2">자료없음</td>
+		</tr>
+	{% endif %}
+</table>
 </body>
 </html>
