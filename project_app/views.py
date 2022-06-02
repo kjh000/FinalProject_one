@@ -62,12 +62,16 @@ def basketFunc(request):
     print('request GET : ', request.GET)
     name = request.GET.get("name")
     price = request.GET.get("price")
-    print(price)
-    print(name)
+    # print(price)
+    # print(name)
+    price = int(price)
+    # print(type(price))
     product = {"name" : name, "price" : price}
     productList = []
     gmarketList = [] # 지마켓 최저가 장바구니
     fastList = [] # 당일 배송 장바구니
+    
+
     
     g_df = craw_gmarket(name)
     g_product = {"name" : g_df[0],"price":g_df[1]}
@@ -79,7 +83,6 @@ def basketFunc(request):
         productList = request.session["prod"]
         gmarketList = request.session["g_prod"]
         fastList = request.session["f_prod"]
-        
         productList.append(product)
         gmarketList.append(g_product)
         fastList.append(f_product)
@@ -96,14 +99,34 @@ def basketFunc(request):
         request.session["g_prod"] = gmarketList
         fastList.append(f_product)
         request.session["f_prod"] = fastList
-            
+    
+    
+    
+    tot,g_tot,f_tot = 0,0,0
+    for p in request.session['prod']:
+        tot += p["price"]
+    
+    for g in request.session['g_prod']:
+        g['price']=g['price'].replace(',',"")
+        g_tot += int(g["price"])
+    for f in request.session['f_prod']:
+        f['price']=f['price'].replace(',',"")
+        f_tot += int(f["price"])
+        
+    request.session["tot"] = tot
+    request.session["g_tot"] = g_tot
+    request.session["f_tot"] = f_tot
+    
     # return HttpResponseRedirect("basket")
     print(productList)
     context = {} #html에 보낼 용도
     context['products'] = request.session['prod']
     context['g_products'] = request.session['g_prod']
     context['f_products'] = request.session['f_prod']
-    
+    context['tot'] = request.session['tot']
+    context['g_tot'] = request.session['g_tot']
+    context['f_tot'] = request.session['f_tot']
+
     request.session.set_expiry(30) #세션 시간 결정
     
 
