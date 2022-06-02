@@ -67,17 +67,26 @@ def basketFunc(request):
     product = {"name" : name, "price" : price}
     productList = []
     gmarketList = [] # 지마켓 최저가 장바구니
+    fastList = [] # 당일 배송 장바구니
+    
     g_df = craw_gmarket(name)
     g_product = {"name" : g_df[0],"price":g_df[1]}
+    
+    f_df = craw_fast(name)
+    f_product = {"name" : f_df[0],"price":f_df[1]}
     
     if "prod" in request.session: #session이 생성되어있지 않으면, 즉 첫 번째 상품이 아니라면 productList에 상품 정보 저장하기
         productList = request.session["prod"]
         gmarketList = request.session["g_prod"]
+        fastList = request.session["f_prod"]
         
         productList.append(product)
         gmarketList.append(g_product)
+        fastList.append(f_product)
         request.session["prod"] = productList
         request.session["g_prod"] = gmarketList
+        request.session["f_prod"] = fastList
+        
         
         print("세션 유효 시간 : ", request.session.get_expiry_age())
     else: #session에 shop이 없으면 productList에 상품을 넣고 request.session에 "shop" 이라는 키를 만든다
@@ -85,13 +94,17 @@ def basketFunc(request):
         request.session["prod"] = productList
         gmarketList.append(g_product)
         request.session["g_prod"] = gmarketList
+        fastList.append(f_product)
+        request.session["f_prod"] = fastList
             
     # return HttpResponseRedirect("basket")
     print(productList)
     context = {} #html에 보낼 용도
     context['products'] = request.session['prod']
     context['g_products'] = request.session['g_prod']
-    request.session.set_expiry(10) #세션 시간 결정
+    context['f_products'] = request.session['f_prod']
+    
+    request.session.set_expiry(30) #세션 시간 결정
     
 
     # return render(request, 'basket.html', {'context' : context})
@@ -102,7 +115,37 @@ def craw_gmarket(item):
     
     item = parse.quote(item)
     url = "https://browse.gmarket.co.kr/search?keyword="
-    url = url+item+"&t=s"
+    # url = url+item+"&t=s"
+    url = url+item
+  
+    html = urlopen(url)
+    
+    soup = BeautifulSoup(html,'html.parser')
+    
+    gm_names = []
+    gm_prices = []
+    gmarket = []
+    
+    names = soup.select('span.text__item')
+    prices = soup.select('strong.text.text__value')
+    
+    for name in names:
+        gm_names.append(name.text.strip())
+    
+    for price in prices:
+        gm_prices.append(price.text.strip())
+    
+    g_df = pd.DataFrame({'제품명':gm_names,'가격':gm_prices})
+    
+    g_df = g_df.sort_values('가격')
+    return g_df.iloc[0]
+
+
+def craw_fast(item):
+    
+    item = parse.quote(item)
+    url = "https://browse.gmarket.co.kr/search?keyword="
+    url = url+item+"&t=e&tf=e:128935607"
   
     html = urlopen(url)
     
