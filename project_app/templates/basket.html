@@ -52,5 +52,26 @@
 		</tr>
 	{% endif %}
 </table>
+<br />
+
+<h2>당일 배송</h2>
+<table border="1">
+	<tr>
+		<th>상품명</th>
+		<th>가격</th>
+	</tr>
+	{% if f_products %}
+		{% for fpro in f_products %}
+		<tr>
+			<td>{{fpro.name}}</td>
+			<td>{{fpro.price}}</td>
+		</tr>
+		{% endfor %}
+	{% else %}
+		<tr>
+			<td colspan="2">자료없음</td>
+		</tr>
+	{% endif %}
+</table>
 </body>
 </html>
