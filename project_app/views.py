@@ -4,6 +4,9 @@ import numpy as np
 import csv
 import sys
 import os
+from urllib.request import urlopen
+from bs4 import BeautifulSoup
+import urllib.request as req
 # Create your views here.
 items=['간장', '계란', '고추장', '과자', '기저귀', '껌', '냉동만두', '된장', '두루마리화장지', '두부', '라면', '마요네즈', '맛김', '맛살', '맥주', '밀가루', '분유', '사이다', '생리대', '생수', '샴푸', '설탕', '세탁세제', '소주', '시리얼', '식용유', '쌈장', '아이스크림', '어묵', '오렌지주스', '우유', '즉석밥', '참기름', '참치 캔', '커피', '케첩', '콜라', '햄']
 names = ['지역','마켓종류','마트이름','분류','품목','가격']
@@ -53,14 +56,6 @@ def insertFunc(request):
     else:
         print('error')
 
-# def craw_gmarket(request):
-#     url = "https://browse.gmarket.co.kr/search?keyword="
-#     url + "&t=s"
-#
-#     item = request.GET.get("item")
-#     # print(irum)
-#     return render(request,'test2.html',{'item':item})
-
 def basketFunc(request):
     print('request GET : ', request.GET)
     name = request.GET.get("name")
@@ -84,3 +79,29 @@ def basketFunc(request):
     request.session.set_expiry(10) #세션 시간 결정
     return render(request, 'basket.html', context)
     
+def craw_gmarket(request):
+    
+    item = request.GET.get("item")
+    # url = "https://browse.gmarket.co.kr/search?keyword="
+    # url = url + item + "&t=s"
+    url = 'https://browse.gmarket.co.kr/search?keyword=%ec%8b%a0%eb%9d%bc%eb%a9%b4&t=s'
+    html = urlopen(url)
+    soup = BeautifulSoup(html,'html.parser')
+    
+    gm_names = []
+    gm_prices = []
+    gmarket = []
+    
+    names = soup.select('span.text__item')
+    prices = soup.select('strong.text.text__value')
+    
+    for name in names:
+        gm_names.append(name.text.strip())
+    
+    for price in prices:
+        gm_prices.append(price.text.strip())
+    
+    df = pd.DataFrame({'제품명':gm_names,'가격':gm_prices})
+    
+    df = df.sort_values('가격')
+    return render(request,'test2.html',{'item':item,'df':df})
