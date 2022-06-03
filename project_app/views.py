@@ -13,16 +13,21 @@ from urllib import parse
 items=['간장', '계란', '고추장', '과자', '기저귀', '껌', '냉동만두', '된장', '두루마리화장지', '두부', '라면', '마요네즈', '맛김', '맛살', '맥주', '밀가루', '분유', '사이다', '생리대', '생수', '샴푸', '설탕', '세탁세제', '소주', '시리얼', '식용유', '쌈장', '아이스크림', '어묵', '오렌지주스', '우유', '즉석밥', '참기름', '참치 캔', '커피', '케첩', '콜라', '햄']
 names = ['지역','마켓종류','마트이름','분류','품목','가격']
 
+items_e = ['ganjang','yakult','gochu','snack','hip','gum','mando','doenjang','hyuji','dobu','ramen','mayonnaise','kim','crab','hite','garu','powder','cider','napkin','water','shampoo','sugar','pongpong','soju','seereal','oil','ssamjang','ice','fish','juice','milk','rice','chamoil','chamchi','coffee','ketchup','colla','ham']
+idx = ['ramen','water','colla','rice','snack','gum','ice','garu','seereal','dobu','mando','sugar','gochu','doenjang','ssamjang','oil','ganjang','ketchup','mayonnaise','chamoil','kim','fish','crab','chamchi','ham','powder','juice','cider','coffee','milk','yakult','hite','soju','hip','hyuji','napkin','shampoo','pongpong']
 dir = os.path.dirname(os.path.realpath(__file__))
 
 ldata = dir + '\static\csvs\local_mart.csv'
-gdata = dir + '\static\csvs\gmarket.csv'
+rdata = dir + '\static\csvs\like.csv'
 
 local = pd.read_csv(ldata, header = None,names = names)
-gmarket = pd.read_csv(gdata, header = None,names=['품목','가격'])
+reco = pd.read_csv(rdata, header = None)
+
 
 df = pd.DataFrame(local)
-df_g = pd.DataFrame(gmarket)
+df_r = pd.DataFrame(reco)
+df_r.index = idx
+df_r.columns = idx
 
 def mainFunc(request):
     item=items
@@ -36,7 +41,32 @@ def findFunc(request):
         print(irum)
         dfl = df[df['분류'].str.contains(irum) & df['지역'].str.contains("종로구")].values.tolist()
         dfl.sort(key=lambda x : x[5])
-        return render(request,'finder.html',{'dfl':dfl, 'irum':irum})
+        
+        reco = []
+        n_reco = []
+        id = items.index(irum)
+        en_irum = items_e[id]
+        
+        df_reco = df_r.loc[en_irum]
+        dfv = df_reco.values
+        
+        for i in range(len(dfv)):
+            # 이거 like.csv 수정해야됨
+            ii = items_e.index(idx[i])
+            cnt = [dfv[i],items[ii]]
+            # reco.append(items[ii])
+            reco.append(cnt)
+        
+        # print(id,en_irum)
+        
+        reco.sort(reverse=True)
+        
+        for i in reco[1:7]:
+            n_reco.append(i[1])
+        
+        print(n_reco)
+        
+        return render(request,'finder.html',{'dfl':dfl, 'irum':irum,'reco':n_reco})
     else:
         print('error')
 
