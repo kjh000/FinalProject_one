@@ -88,22 +88,50 @@
 						</thead>
 						<tbody>
 							{% for df in dfl %}
-							<tr>
-								<form action="basket" method="get">
-									<td>{{df.0}}</td>
-									<td>{{df.2}}</td>
-									<td>{{df.4}}</td>
-									<td><input type="hidden" name="name" id="name" value="{{df.4}}" readonly/></td>
-									<td>{{df.5}}</td>
-									<td><input type="hidden" name="price" id="price" value="{{df.5}}" readonly/></td>
-									<td><button class="btn btn-primary" type="submit">담기</button></td>
-								</form>
-							</tr>
+								<tr>
+									<form action="basket" method="get">
+										<td>{{df.0}}</td>
+										<td>{{df.2}}</td>
+										<td>{{df.4}}</td>
+										<td><input type="hidden" name="name" id="name" value="{{df.4}}" readonly/></td>
+										<td>{{df.5}}</td>
+										<td><input type="hidden" name="price" id="price" value="{{df.5}}" readonly/></td>
+										<td><button class="btn btn-primary" type="button">담기</button></td>
+									</form>
+								</tr>
 							{% endfor %}
 						</tbody>
 					</table>
 				</div>
         </div>
     </div>
+<script type="text/javascript">
+	//id, class, tagname 선택시에 querySelector보다 getElementById, getElementsByClassName, getElementsByTagName 사용이 빠르다
+
+	//document.querySelectorAll(".btn").addEventListener("click", function(){
+	/*
+	document.querySelector(".btn").addEventListener("click", function(){
+		let btn = document.querySelectorAll(".btn");
+		for (i=0; i<btn.length; i++){
+			btn[i]
+		}
+		
+		let result = confirm("장바구니 페이지로 이동하시겠습니까?");
+		if(result){
+			location.href = "basket";
+		}else{
+			return false;
+		}
+	})	
+	*/
+	document.querySelector(".btn").addEventListener("click", function(){
+	//document.querySelectorAll(".btn").addEventListener("click", function(){
+		console.log("1");
+			
+	})
+	
+	//body > div > div.row.items > div > table > tbody > tr:nth-child(1) > td:nth-child(8) > button
+	//body > div > div.row.items > div > table > tbody > tr:nth-child(2) > td:nth-child(8) > button
+</script>
 </body>
 </html>
