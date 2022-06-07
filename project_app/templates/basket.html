@@ -22,7 +22,6 @@
                     <img src='../static/img/GO.png'>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-
                 <div class="modal-body p-5 pt-0">
                     <h2>동네마트 최저가</h2>
                     <table class="table table-hover">
@@ -42,19 +41,15 @@
                             {% endfor %}
                         {% else %}
                                 <tr>
-                                    <td colspan="2">자료없음</td>
+                                    <td colspan="2">구매 상품 없음</td>
                                 </tr>
                         {% endif %}
                         </tbody>
                     </table>
-                    <br />
-                    {{tot}}
-                    <br />
-                    <h1>세션</h1>
-                    세션 유효 시간 : {{ request.session.get_expiry_age }} <br>
-                    현재 사용자에게 할당된 세선 id : {{request.session.session_key}} <br>
-
-                    <br />
+                    <br/>
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="reset()">Cancel</button>
+                    <br/>                    
+                    <br/>
                     <h2>g마켓 최저가</h2>
                     <table class="table table-hover">
                         <thead>
@@ -113,4 +108,19 @@
         </div>
     </div>
 </body>
+<script>
+document.querySelector(".btn-close").addEventListener("click",function(){
+	location.href="reFinder";
+})
+
+function reset(){
+   let isReset = confirm("전체 취소하시겠습니까?");
+   if(isReset){
+      alert("전체 취소되었습니다");
+      location.href="reset";
+   }else{
+      alert("즐거운 쇼핑되십시오");
+   }
+}
+</script>
 </html>

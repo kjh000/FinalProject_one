@@ -70,6 +70,43 @@ def findFunc(request):
     else:
         print('error')
 
+def searchFunc(request):
+    if request.method =='GET':
+        print('GET 요청 처리')
+        
+        irum = request.GET.get("searchInput2")
+        print(irum)
+        dfl = df[df['분류'].str.contains(irum) & df['지역'].str.contains("종로구")].values.tolist()
+        dfl.sort(key=lambda x : x[5])
+        
+        reco = []
+        n_reco = []
+        id = items.index(irum)
+        en_irum = items_e[id]
+        
+        df_reco = df_r.loc[en_irum]
+        dfv = df_reco.values
+        
+        for i in range(len(dfv)):
+            # 이거 like.csv 수정해야됨
+            ii = items_e.index(idx[i])
+            cnt = [dfv[i],items[ii]]
+            # reco.append(items[ii])
+            reco.append(cnt)
+        
+        # print(id,en_irum)
+        
+        reco.sort(reverse=True)
+        
+        for i in reco[1:7]:
+            n_reco.append(i[1])
+        
+        print(n_reco)
+        
+        return render(request,'finder.html',{'dfl':dfl, 'irum':irum,'reco':n_reco})
+    else:
+        print('error')
+
 
 def insertFunc(request):
     if request.method =='GET':
@@ -162,7 +199,14 @@ def basketFunc(request):
 
     # return render(request, 'basket.html', {'context' : context})
     return render(request, 'basket.html', context)
- 
+
+def reFinderFunc(request):
+    
+    return render(request, 'Finder.html')
+
+def resetFunc(request):
+    del request.session["prod"]
+    return render(request, 'basket.html')
     
 def craw_gmarket(item):
     
