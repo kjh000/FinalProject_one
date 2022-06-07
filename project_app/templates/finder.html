@@ -8,6 +8,59 @@
     <!-- CSS only -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="/static/css/finder.css">
+
+<script type="text/javascript">
+	//id, class, tagname 선택시에 querySelector보다 getElementById, getElementsByClassName, getElementsByTagName 사용이 빠르다
+	/*
+	window.onload = function(){
+		const buttons = document.querySelectorAll(".btn")
+		for (let button of buttons) {
+			button.addEventListener('click', function(){
+				
+				let result = confirm("장바구니 페이지로 이동하시겠습니까?");
+				if(result){
+					//location.href = "basket";
+					//location.href = "basket";
+					//frm.submit();
+					return true;
+				}else{
+					return false;
+				}
+				
+				//frm.submit();
+			})
+		}		
+	}
+	*/
+
+	//document.querySelectorAll(".btn").addEventListener("click", function(){
+	/*
+	document.querySelector(".btn").addEventListener("click", function(){
+		let btn = document.querySelectorAll(".btn");
+		for (let i=0; i<btn.length; i++){
+			btn[i]
+		}
+		
+		let result = confirm("장바구니 페이지로 이동하시겠습니까?");
+		if(result){
+			location.href = "basket";
+		}else{
+			return false;
+		}
+	})	
+	*/
+
+	//document.querySelector(".btn").addEventListener("click", function(){
+	//document.querySelectorAll(".btn").addEventListener("click", function(){
+	//	console.log("1");	
+	//})
+	
+	//const sections = document.querySelectorAll("#tb , #tb .btn");
+	//console.log(sections.constructor.name);
+	
+	//body > div > div.row.items > div > table > tbody > tr:nth-child(1) > td:nth-child(8) > button
+	//body > div > div.row.items > div > table > tbody > tr:nth-child(2) > td:nth-child(8) > button
+</script>
 </head>
 <body>
 	<nav class="navbar navbar-expand-lg navbar-light bg-light" aria-label="Eighth navbar example">
@@ -82,62 +135,36 @@
         </div>
         <hr/>
         <div class="row items">
-                <div class="row item">
-					<table class="table table-hover">
-						<thead>
-							<tr>
-								<th>지역</th>
-								<th>마트이름</th>
-								<th colspan='2'>제품명</th>
-								<th>가격</th>
+			<div class="row item">
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th>지역</th>
+							<th>마트이름</th>
+							<th colspan='2'>제품명</th>
+							<th>가격</th>
+						</tr>
+					</thead>
+					<tbody id="tb">
+						{% for df in dfl %}
+							<tr> <!-- form이 반복문 안에 있으면 유지 보수나 디버깅 할 때 안 좋다? 물어보기 -->
+								<form action="basket" name="frm" method="get" onsubmit="return confirm('장바구니 페이지로 이동하시겠습니까?');">
+									<td>{{df.0}}</td>
+									<td>{{df.2}}</td>
+									<td>{{df.4}}</td>
+									<td><input type="hidden" name="name" id="name" value="{{df.4}}" readonly/></td>
+									<td>{{df.5}}</td>
+									<td><input type="hidden" name="price" id="price" value="{{df.5}}" readonly/></td>
+									<!-- <td><button class="btn btn-primary" type="button">담기</button></td> -->
+									<!-- <td><input class="btn btn-primary" type="button" value="담기" ></td> -->
+									<td><input class="btn btn-primary" type="submit" value="담기" ></td>
+								</form>
 							</tr>
-						</thead>
-						<tbody>
-							{% for df in dfl %}
-								<tr>
-									<form action="basket" method="get">
-										<td>{{df.0}}</td>
-										<td>{{df.2}}</td>
-										<td>{{df.4}}</td>
-										<td><input type="hidden" name="name" id="name" value="{{df.4}}" readonly/></td>
-										<td>{{df.5}}</td>
-										<td><input type="hidden" name="price" id="price" value="{{df.5}}" readonly/></td>
-										<td><button class="btn btn-primary" type="button">담기</button></td>
-									</form>
-								</tr>
-							{% endfor %}
-						</tbody>
-					</table>
-				</div>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
         </div>
     </div>
-<script type="text/javascript">
-	//id, class, tagname 선택시에 querySelector보다 getElementById, getElementsByClassName, getElementsByTagName 사용이 빠르다
-
-	//document.querySelectorAll(".btn").addEventListener("click", function(){
-	/*
-	document.querySelector(".btn").addEventListener("click", function(){
-		let btn = document.querySelectorAll(".btn");
-		for (i=0; i<btn.length; i++){
-			btn[i]
-		}
-		
-		let result = confirm("장바구니 페이지로 이동하시겠습니까?");
-		if(result){
-			location.href = "basket";
-		}else{
-			return false;
-		}
-	})	
-	*/
-	document.querySelector(".btn").addEventListener("click", function(){
-	//document.querySelectorAll(".btn").addEventListener("click", function(){
-		console.log("1");
-			
-	})
-	
-	//body > div > div.row.items > div > table > tbody > tr:nth-child(1) > td:nth-child(8) > button
-	//body > div > div.row.items > div > table > tbody > tr:nth-child(2) > td:nth-child(8) > button
-</script>
 </body>
 </html>
