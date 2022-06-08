@@ -28,5 +28,6 @@ urlpatterns = [
     path('show/reFinder', views.reFinderFunc),  # 장바구니에서 x 누르면 다시 상품 페이지로 이동.
     path('show/search', views.searchFunc),
     path('show/reset', views.resetFunc),
+    path('show/show', views.findFunc),
     
 ]
