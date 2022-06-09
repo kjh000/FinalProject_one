@@ -107,11 +107,22 @@
                     <br />
                     총합 : {{f_tot}} 원
                     <hr class="my-4">
+                    <form action="receipt" method="get">
+                    <input type="hidden" name = "products" value = "{{products}}"/>
+                    <input type="hidden" name = "g_products" value = "{{g_products}}"/>
+                    <input type="hidden" name = "f_products" value = "{{f_products}}"/>
+                    <input type="hidden" name = "tot" value = "{{tot}}"/>
+                    <input type="hidden" name = "g_tot" value = "{{g_tot}}"/>
+                    <input type="hidden" name = "f_tot" value = "{{f_tot}}"/>
+                     
+                    
                     <button class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" type="submit">비교하기</button>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
+   
 </body>
 <script>
 document.querySelector(".btn-close").addEventListener("click",function(){
