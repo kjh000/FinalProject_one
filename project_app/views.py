@@ -129,6 +129,7 @@ def basketFunc(request):
     print('request GET : ', request.GET)
     name = request.GET.get("name")
     price = request.GET.get("price")
+    mart = request.GET.get("mart")
     # print(price)
     # print(name)
     price = int(price)
@@ -141,10 +142,16 @@ def basketFunc(request):
 
     
     g_df = craw_gmarket(name)
-    g_product = {"name" : g_df[0],"price":g_df[1]}
+    if g_df.empty:
+        g_product = {"name" : 'None',"price":'0'}
+    else:
+        g_product = {"name" : g_df[0],"price":g_df[1]}
     
     f_df = craw_fast(name)
-    f_product = {"name" : f_df[0],"price":f_df[1]}
+    if f_df.empty:
+        f_product = {"name" : 'None',"price":'0'}
+    else:
+        f_product = {"name" : f_df[0],"price":f_df[1]}
     
     if "prod" in request.session: #session이 생성되어있지 않으면, 즉 첫 번째 상품이 아니라면 productList에 상품 정보 저장하기
         productList = request.session["prod"]
@@ -185,7 +192,7 @@ def basketFunc(request):
     request.session["f_tot"] = f_tot
     
     # return HttpResponseRedirect("basket")
-    print(productList)
+    
     context = {} #html에 보낼 용도
     context['products'] = request.session['prod']
     context['g_products'] = request.session['g_prod']
@@ -198,6 +205,7 @@ def basketFunc(request):
     
 
     # return render(request, 'basket.html', {'context' : context})
+    
     return render(request, 'basket.html', context)
 
 def reFinderFunc(request):
@@ -235,7 +243,10 @@ def craw_gmarket(item):
     g_df = pd.DataFrame({'제품명':gm_names,'가격':gm_prices})
     
     g_df = g_df.sort_values('가격')
-    return g_df.iloc[0]
+    if g_df.empty:
+        return g_df
+    else:
+        return g_df.iloc[0]
 
 
 def craw_fast(item):
@@ -264,4 +275,81 @@ def craw_fast(item):
     g_df = pd.DataFrame({'제품명':gm_names,'가격':gm_prices})
     
     g_df = g_df.sort_values('가격')
-    return g_df.iloc[0]
+    
+    if g_df.empty:
+        return g_df
+    else:
+        return g_df.iloc[0]
+
+
+def receipt(request):
+    products = request.GET.get("products")
+    g_products = request.GET.get("g_products")
+    f_products = request.GET.get("f_products")
+    
+    tot = request.GET.get("tot")
+    g_tot = request.GET.get("g_tot")
+    f_tot = request.GET.get("f_tot")
+    
+    
+    productss = []
+    a = products[1:-1]
+    # a = products[:]
+
+    a = a.replace('{',"")
+    a = a.replace('}',"") 
+    
+    a = a.split(',')
+    for i in range(len(a)):
+        j = a[i]
+        # print(j)
+        if i%2 == 0:
+            aa = {}
+            if i == 0:
+                aa['name'] = j[9:-1]
+            else:
+                aa['name'] = j[10:-1]
+        else:
+            aa['price'] = int(j[10:])
+            productss.append(aa)
+            
+    g_productss = []
+    b = g_products[1:-1]
+    # a = products[:]
+    
+    b = b.replace('{',"")
+    b = b.replace('}',"") 
+    
+    b = b.split(',')
+    for i in range(len(b)):
+        j = b[i]
+        if i%2 == 0:
+            bb = {}
+            if i == 0:
+                bb['name'] = j[9:-1]
+            else:
+                bb['name'] = j[10:-1]
+        else:
+            bb['price'] = int(j[11:-1])
+            g_productss.append(bb)
+    
+    f_productss = []
+    c = f_products[1:-1]
+    c = c.replace('{',"")
+    c = c.replace('}',"") 
+    
+    c = c.split(',')
+    for i in range(len(c)):
+        j = c[i]
+        if i%2 == 0:
+            cc = {}
+            if i == 0:
+                cc['name'] = j[9:-1]
+            else:
+                cc['name'] = j[10:-1]
+        else:
+            cc['price'] = int(j[11:-1])
+            f_productss.append(cc)
+    
+              
+    return render(request,'receipt.html',{'products' : productss,'g_products' : g_productss,'f_products' : f_productss,'tot':tot,'g_tot':g_tot,'f_tot':f_tot})

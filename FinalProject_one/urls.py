@@ -29,5 +29,7 @@ urlpatterns = [
     path('show/search', views.searchFunc),
     path('show/reset', views.resetFunc),
     path('show/show', views.findFunc),
+    path('show/receipt', views.receipt),
+    
     
 ]

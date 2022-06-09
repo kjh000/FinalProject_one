@@ -47,30 +47,25 @@
                         <thead>
                             <tr>
                                 <th>Product</th>
-                                <th>#</th>
+                                
                                 <th class="text-center">Price</th>
-                                <th class="text-center">Total</th>
+                                
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td class="col-md-9"><em>신라면 5개입</em></h4></td>
-                                <td class="col-md-1" style="text-align: center"> 2 </td>
-                                <td class="col-md-1 text-center">4,000</td>
-                                <td class="col-md-1 text-center">8,000</td>
-                            </tr>
-                            <tr>
-                                <td class="col-md-9"><em>햇반</em></h4></td>
-                                <td class="col-md-1" style="text-align: center"> 1 </td>
-                                <td class="col-md-1 text-center">1,500</td>
-                                <td class="col-md-1 text-center">1,500</td>
-                            </tr>
-                            <tr>
-                                <td class="col-md-9"><em>스팸</em></h4></td>
-                                <td class="col-md-1" style="text-align: center"> 3 </td>
-                                <td class="col-md-1 text-center">3,600</td>
-                                <td class="col-md-1 text-center">10,800</td>
-                            </tr>
+	                        {% if products %}
+	                        	{% for pro in products %}
+	                            <tr>
+	                                <td class="col-md-9"><em>{{pro.name}}</em></h4></td>
+	                                <td class="col-md-1 text-center">{{pro.price}}</td>
+	                                
+	                            </tr>
+	                            {% endfor %}
+	                            {% else %}
+                                <tr>
+                                    <td colspan="2">자료없음</td>
+                                </tr>
+                            {% endif %}
                             <tr>
                                 <td></td>
                                 <td></td>
@@ -83,7 +78,7 @@
                                 </p></td>
                                 <td class="text-center">
                                 <p>
-                                    <strong>20,300</strong>
+                                    <strong>{{tot}}</strong>
                                 </p>
                                 <p>
                                     <strong>0</strong>
@@ -93,7 +88,7 @@
                                 <td></td>
                                 <td></td>
                                 <td class="text-right"><h4><strong>Total:</strong></h4></td>
-                                <td class="text-center text-danger"><h4><strong>20,300</strong></h4></td>
+                                <td class="text-center text-danger"><h4><strong>{{tot}}</strong></h4></td>
                             </tr>
                         </tbody>
                     </table>
@@ -114,7 +109,7 @@
                             무슨동
                             <br>
                             <p title="Delivery">Delivery : 로켓배송</p> 
-                        </address>
+                        </address> 
                     </div>
                     <div class="col-xs-6 col-sm-6 col-md-6 text-right">
                         <p>
@@ -134,30 +129,25 @@
                         <thead>
                             <tr>
                                 <th>Product</th>
-                                <th>#</th>
+                                
                                 <th class="text-center">Price</th>
-                                <th class="text-center">Total</th>
+                                
                             </tr>
                         </thead>
                         <tbody>
+                        	{% if g_products %}
+                                {% for gpro in g_products %}
                             <tr>
-                                <td class="col-md-9"><em>신라면 5개입</em></h4></td>
-                                <td class="col-md-1" style="text-align: center"> 2 </td>
-                                <td class="col-md-1 text-center">4,000</td>
-                                <td class="col-md-1 text-center">8,000</td>
+                                <td class="col-md-9"><em>{{gpro.name}}</em></h4></td>
+                                <td class="col-md-1 text-center">{{gpro.price}}</td>
+                                
                             </tr>
-                            <tr>
-                                <td class="col-md-9"><em>햇반</em></h4></td>
-                                <td class="col-md-1" style="text-align: center"> 1 </td>
-                                <td class="col-md-1 text-center">1,500</td>
-                                <td class="col-md-1 text-center">1,500</td>
-                            </tr>
-                            <tr>
-                                <td class="col-md-9"><em>스팸</em></h4></td>
-                                <td class="col-md-1" style="text-align: center"> 3 </td>
-                                <td class="col-md-1 text-center">3,600</td>
-                                <td class="col-md-1 text-center">10,800</td>
-                            </tr>
+                                 {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="2">자료없음</td>
+                                </tr>
+                            {% endif %}
                             <tr>
                                 <td></td>
                                 <td></td>
@@ -170,17 +160,17 @@
                                 </p></td>
                                 <td class="text-center">
                                 <p>
-                                    <strong>20,300</strong>
+                                    <strong>{{g_tot}}</strong>
                                 </p>
                                 <p>
-                                    <strong>0</strong>
+                                    <strong>3000</strong>
                                 </p></td>
                             </tr>
                             <tr>
                                 <td></td>
                                 <td></td>
                                 <td class="text-right"><h4><strong>Total:</strong></h4></td>
-                                <td class="text-center text-danger"><h4><strong>20,300</strong></h4></td>
+                                <td class="text-center text-danger"><h4><strong>{{g_tot}}+3000</strong></h4></td>
                             </tr>
                         </tbody>
                     </table>
@@ -192,5 +182,6 @@
             <div class="col-md-1"></div>
         </div>       
     </div>
+
 </body>
 </html>
