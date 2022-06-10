@@ -7,181 +7,156 @@
 <title>Document</title>
 <!-- CSS only -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-<!-- JavaScript Bundle with Popper -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
-<script src="http://code.jquery.com/jquery-latest.js"></script>
-<style>body {margin-top: 100px;}</style>
+<link rel="stylesheet" type="text/css" href="/static/css/go.css?after">
 </head>
 <body>
-    <div class="container ">
+    <div class="container">
         <div class="row">
             <div class="col-md-1"></div>
-            <div class="col-md-4 bg-light text-dark">
+            <div class="col-md-4 receipt">
                 <div class="row">
                     <div class="col-xs-6 col-sm-6 col-md-6">
                         <address>
-                            <strong>홈플러스익스프레스</strong>
+                            <strong>무슨마트</strong>
                             <br>
-                            서울시 종로구
+							서울시 
                             <br>
-                            무슨동
+							? 구 ? 동
                             <br>
-                            <p title="Delivery">Delivery:To Walk</p> 
+                            <p>Delivery : To Walk</p> 
                         </address>
                     </div>
                     <div class="col-xs-6 col-sm-6 col-md-6 text-right">
-                        <p>
-                            <em>Order Date: 2022. 6. 2.</em>
-                        </p>
-                        <p>
-                            <em>Receipt #: 34522677</em>
-                        </p>
+                        <p><em>Order Date: 2022. 6. 2.</em></p>
+                        <p><em>Receipt #: 34522677</em></p>
                     </div>
                 </div>
                 <div class="row">
                     <div class="text-center">
-                        <h1>Receipt</h1>
+                        <h1><img src='../static/img/GO.png'></h1>
                     </div>
-                    </span>
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th>Product</th>
-                                
-                                <th class="text-center">Price</th>
-                                
+                                <th colspan="3">Product</th>
+                                <th colspan="1" class="text-center">Price</th>
                             </tr>
                         </thead>
                         <tbody>
 	                        {% if products %}
-	                        	{% for pro in products %}
-	                            <tr>
-	                                <td class="col-md-9"><em>{{pro.name}}</em></h4></td>
-	                                <td class="col-md-1 text-center">{{pro.price}}</td>
-	                                
-	                            </tr>
-	                            {% endfor %}
-	                            {% else %}
-                                <tr>
-                                    <td colspan="2">자료없음</td>
-                                </tr>
+                        	{% for pro in products %}
+                            <tr>
+                                <td colspan="3"><em>{{pro.name}}</em></h4></td>
+                                <td colspan="1" class="text-center">{{pro.price}}</td>
+                                
+                            </tr>
+                            {% endfor %}
+	                        {% else %}
+                            <tr>
+                                <td colspan="4">자료없음</td>
+                            </tr>
                             {% endif %}
                             <tr>
                                 <td></td>
                                 <td></td>
                                 <td class="text-right">
-                                <p>
-                                    <strong>Subtotal:</strong>
-                                </p>
-                                <p>
-                                    <strong>배송비:</strong>
-                                </p></td>
+	                                <p><strong>Subtotal:</strong></p>
+	                                <p><strong>배송비:</strong></p>
+	                            </td>
                                 <td class="text-center">
-                                <p>
-                                    <strong>{{tot}}</strong>
-                                </p>
-                                <p>
-                                    <strong>0</strong>
-                                </p></td>
+	                                <p><strong>{{tot}}</strong></p>
+	                                <p><strong>0</strong></p>
+                                </td>
                             </tr>
                             <tr>
                                 <td></td>
                                 <td></td>
-                                <td class="text-right"><h4><strong>Total:</strong></h4></td>
-                                <td class="text-center text-danger"><h4><strong>{{tot}}</strong></h4></td>
+                                <td class="text-right">
+                                	<h4><strong>Total:</strong></h4>
+                                </td>
+                                <td class="text-center text-danger">
+                                	<h4><strong>{{tot}}</strong></h4>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
-                    <button type="button" class="btn btn-success btn-lg btn-block">
-                        Buy Now<span class="glyphicon glyphicon-chevron-right"></span>
-                    </button>
+                    <button type="button" class="btn btn-success btn-lg btn-block">구매하러가기</button>
                 </div>
             </div>
-            <div class="col-md-2"></div>
-            <div class="col-md-4 bg-light text-dark">
+            <div class="col-md-2">
+            	<!-- 빈공가안~~ -->
+            </div>
+            <div class="col-md-4 receipt">
                 <div class="row">
                     <div class="col-xs-6 col-sm-6 col-md-6">
                         <address>
-                            <strong>쿠팡</strong>
+                            <strong>G Market</strong>
                             <br>
-                            서울시 종로구
+							서울시
                             <br>
-                            무슨동
+							? 구 ? 동
                             <br>
-                            <p title="Delivery">Delivery : 로켓배송</p> 
+                            <p>Delivery : </p> 
                         </address> 
                     </div>
                     <div class="col-xs-6 col-sm-6 col-md-6 text-right">
-                        <p>
-                            <em>Order Date: 2022. 6. 2.</em>
-                        </p>
-                        <p>
-                            <em>Receipt #: 34522677</em>
-                        </p>
+                        <p><em>Order Date: 2022. 6. 2.</em> </p>
+                        <p><em>Receipt #: 34522677</em></p>
                     </div>
                 </div>
                 <div class="row">
                     <div class="text-center">
-                        <h1>Receipt</h1>
+                        <h1><strong>G Market</strong></h1>
                     </div>
-                    </span>
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th>Product</th>
-                                
-                                <th class="text-center">Price</th>
-                                
+                                <th colspan="3">Product</th>
+                                <th colspan="1" class="text-center">Price</th>
                             </tr>
                         </thead>
                         <tbody>
                         	{% if g_products %}
-                                {% for gpro in g_products %}
+                            {% for gpro in g_products %}
                             <tr>
-                                <td class="col-md-9"><em>{{gpro.name}}</em></h4></td>
-                                <td class="col-md-1 text-center">{{gpro.price}}</td>
-                                
+                                <td colspan="3"><em>{{gpro.name}}</em></td>
+                                <td colspan="1" class="text-center">{{gpro.price}}</td>
                             </tr>
-                                 {% endfor %}
+                            {% endfor %}
                             {% else %}
-                                <tr>
-                                    <td colspan="2">자료없음</td>
-                                </tr>
+                            <tr>
+                                <td colspan="4">자료없음</td>
+                            </tr>
                             {% endif %}
                             <tr>
                                 <td></td>
                                 <td></td>
                                 <td class="text-right">
-                                <p>
-                                    <strong>Subtotal:</strong>
-                                </p>
-                                <p>
-                                    <strong>배송비:</strong>
-                                </p></td>
+                                	<p><strong>Subtotal:</strong></p>
+                                	<p><strong>배송비:</strong></p>
+                                </td>
                                 <td class="text-center">
-                                <p>
-                                    <strong>{{g_tot}}</strong>
-                                </p>
-                                <p>
-                                    <strong>3000</strong>
-                                </p></td>
+                                	<p><strong>{{g_tot}}</strong></p>
+                                	<p><strong>3000</strong></p>
+                                </td>
                             </tr>
                             <tr>
                                 <td></td>
                                 <td></td>
-                                <td class="text-right"><h4><strong>Total:</strong></h4></td>
-                                <td class="text-center text-danger"><h4><strong>{{g_tot}}+3000</strong></h4></td>
+                                <td class="text-right">
+                                	<h4><strong>Total:</strong></h4>
+                                </td>
+                                <td class="text-center text-danger">
+                                	<h4><strong>{{g_tot}}+3000</strong></h4>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
-                    <button type="button" class="btn btn-primary btn-lg btn-block">
-                        Buy Now<span class="glyphicon glyphicon-chevron-right"></span>
-                    </button>
+                    <button type="button" class="btn btn-primary btn-lg btn-block">구매하러가기</button>
                 </div>
             </div>
             <div class="col-md-1"></div>
         </div>       
     </div>
-
 </body>
 </html>

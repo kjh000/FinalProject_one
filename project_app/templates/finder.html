@@ -1,75 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Finder</title>
-    <!-- CSS only -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="/static/css/finder.css">
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <script src="http://code.jquery.com/jquery-latest.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script type="text/javascript" src="/static/js/main.js"></script>
-	<style type="text/css">
-    img { 
-		width : 30%;
-		height: 30%; 
-	}
-    </style>
-<script type="text/javascript">
-	//id, class, tagname 선택시에 querySelector보다 getElementById, getElementsByClassName, getElementsByTagName 사용이 빠르다
-	/*
-	window.onload = function(){
-		const buttons = document.querySelectorAll(".btn")
-		for (let button of buttons) {
-			button.addEventListener('click', function(){
-				
-				let result = confirm("장바구니 페이지로 이동하시겠습니까?");
-				if(result){
-					//location.href = "basket";
-					//location.href = "basket";
-					//frm.submit();
-					return true;
-				}else{
-					return false;
-				}
-				
-				//frm.submit();
-			})
-		}		
-	}
-	*/
-
-	//document.querySelectorAll(".btn").addEventListener("click", function(){
-	/*
-	document.querySelector(".btn").addEventListener("click", function(){
-		let btn = document.querySelectorAll(".btn");
-		for (let i=0; i<btn.length; i++){
-			btn[i]
-		}
-		
-		let result = confirm("장바구니 페이지로 이동하시겠습니까?");
-		if(result){
-			location.href = "basket";
-		}else{
-			return false;
-		}
-	})	
-	*/
-
-	//document.querySelector(".btn").addEventListener("click", function(){
-	//document.querySelectorAll(".btn").addEventListener("click", function(){
-	//	console.log("1");	
-	//})
-	
-	//const sections = document.querySelectorAll("#tb , #tb .btn");
-	//console.log(sections.constructor.name);
-	
-	//body > div > div.row.items > div > table > tbody > tr:nth-child(1) > td:nth-child(8) > button
-	//body > div > div.row.items > div > table > tbody > tr:nth-child(2) > td:nth-child(8) > button
-</script>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Finder</title>
+<!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="/static/css/go.css?after">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://kit.fontawesome.com/afd6aa68df.js" crossorigin="anonymous"></script>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script type="text/javascript" src="/static/js/finder.js"></script>
 </head>
 <body>
 	<nav class="navbar navbar-expand-lg navbar-light bg-light" aria-label="Eighth navbar example">
@@ -78,71 +21,40 @@
 			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample07" aria-controls="navbarsExample07" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
-			<!-- 
-			<div class="collapse navbar-collapse" id="navbarsExample07">
-				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-					<li class="nav-item">
-						<a class="nav-link active" aria-current="page" href="#">Home</a>
-					</li>
-				</ul>
-			</div>
-			 -->
+			<div class="box">
+		        <form name="search" action="search" method="get">
+		            <input type="text" class="input" name="searchInput" id="searchInput"
+		            onmouseout="document.search.txt.value = ''">
+		        </form>
+		        <i class="fas fa-search"></i>
+		    </div>
 		</div>
 	</nav>
     <div class="container">
-    
         <div class="row a"></div>
         <div class="row a">
             <div class="col-md-4"></div>
-            <div class="col-md-4">
+            <div class="col-md-4 text-center">
             	<h1><strong>{{irum}}</strong></h1>
             </div>
-            <div class="col-md-4">
-            	<form action="search" method="get">
-            	      <input id="searchInput2" name="searchInput2" placeholder="상품을 검색하세요">
-            	      <button class="btn btn-primary" type="submit">
-            	      	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
-						<path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
-						</svg>
-            	      </button>
-            	</form>
-            </div>
+            <div class="col-md-4"></div>
         </div>
         <div class="row choice">
-       		
-            <h3>연관상품</h3>
-            
+        	<h3>연관상품</h3>
             <form action="show" name="frm" method="get">
+            {% for i in reco %}
+           	 	<input type="hidden" name="searchInput" id="searchInput" value="{{i}}" readonly/>
+           	 	<button type="submit" class="btn btn-primary mb-2"># {{i}}</button>
+			{% endfor %}
+			</form>
+        	<!--
+        	<h2>O's choices</h2>
             <div class="col-md-2">
-           	 	<input type="hidden" name="searchInput" id="searchInput" value="{{reco.1}}" readonly/>
-           	 	<input class="btn btn-primary" type="submit" value="{{reco.1}}" >
+                <svg xmlns="http://www.w3.org/2000/svg" width="8rem" height="8rem" fill="currentColor" class="bi bi-box" viewBox="0 0 16 16">
+                    <path d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5 8 5.961 14.154 3.5 8.186 1.113zM15 4.239l-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464L7.443.184z"/>
+                </svg>
             </div>
-            </form>
-            <form action="show" name="frm" method="get">
-            <div class="col-md-2">
-           	 	<input type="hidden" name="searchInput" id="searchInput" value="{{reco.2}}" readonly/>
-           	 	<input class="btn btn-primary" type="submit" value="{{reco.2}}" >
-            </div>
-            </form>
-            <form action="show" name="frm" method="get">
-            <div class="col-md-2">
-           	 	<input type="hidden" name="searchInput" id="searchInput" value="{{reco.3}}" readonly/>
-           	 	<input class="btn btn-primary" type="submit" value="{{reco.3}}" >
-            </div>
-            </form>
-            <form action="show" name="frm" method="get">
-            <div class="col-md-2">
-           	 	<input type="hidden" name="searchInput" id="searchInput" value="{{reco.4}}" readonly/>
-           	 	<input class="btn btn-primary" type="submit" value="{{reco.4}}" >
-            </div>
-            </form>
-            <form action="show" name="frm" method="get">
-            <div class="col-md-2">
-	           	 <input type="hidden" name="searchInput" id="searchInput" value="{{reco.5}}" readonly/>
-           	 	<input class="btn btn-primary" type="submit" value="{{reco.5}}" >
-            </div>
-            </form>
-   
+            -->
         </div>
         <hr/>
         <div class="row items">
@@ -152,30 +64,29 @@
 						<tr>
 							<th>지역</th>
 							<th>마트이름</th>
-							<th colspan='2'>제품명</th>
+							<th>제품명</th>
 							<th>가격</th>
+							<th></th>
 						</tr>
 					</thead>
-					<tbody id="tb">
-						{% for df in dfl %}
-							<tr> <!-- form이 반복문 안에 있으면 유지 보수나 디버깅 할 때 안 좋다? 물어보기 -->
-								<form action="basket" name="frm" method="get" onsubmit="return confirm('장바구니 페이지로 이동하시겠습니까?');">
-									<td>{{df.0}}</td>
-									<td>{{df.2}}</td>
-									<td>{{df.4}}</td>
-									<td><input type="hidden" name="name" id="name" value="{{df.4}}" readonly/></td>
-									<td>{{df.5}}</td>
-									<td><input type="hidden" name="price" id="price" value="{{df.5}}" readonly/></td>
-									<!-- <td><button class="btn btn-primary" type="button">담기</button></td> -->
-									<!-- <td><input class="btn btn-primary" type="button" value="담기" ></td> -->
-									<td><input class="btn btn-primary" type="submit" value="담기" ></td>
-								</form>
-							</tr>
-						{% endfor %}
+					<tbody>
+					{% for df in dfl %}
+						<tr> <!-- form이 반복문 안에 있으면 유지 보수나 디버깅 할 때 안 좋다? 물어보기 -->
+							<form action="basket" name="frm" method="get" onsubmit="return confirm('장바구니 페이지로 이동하시겠습니까?');">
+								<td class='ta'>{{df.0}}</td>
+								<td class='tb'>{{df.2}}</td>
+								<td class='tc'>{{df.4}}<input type="hidden" name="name" id="name" value="{{df.4}}" readonly/></td>
+								<td>{{df.5}}<input type="hidden" name="price" id="price" value="{{df.5}}" readonly/></td>
+								<!-- <td><button class="btn btn-primary" type="button">담기</button></td> -->
+								<!-- <td><input class="btn btn-primary" type="button" value="담기" ></td> -->
+								<td><input class="btn btn-primary" type="submit" value="담기" ></td>
+							</form>
+						</tr>
+					{% endfor %}
 					</tbody>
 				</table>
 			</div>
-        </div>
-    </div>
+		</div>
+	</div>
 </body>
 </html>
