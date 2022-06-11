@@ -153,11 +153,11 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {% if products %}
-                                        {% for pro in products %}
+                                        {% if f_products %}
+                                        {% for fpro in f_products %}
                                         <tr>
-                                            <td colspan="3"><em>{{pro.name}}</em></h4></td>
-                                            <td colspan="1" class="text-center">{{pro.price}}</td>
+                                            <td colspan="3"><em>{{fpro.name}}</em></h4></td>
+                                            <td colspan="1" class="text-center">{{fpro.price}}</td>
                                             
                                         </tr>
                                         {% endfor %}
@@ -172,11 +172,11 @@
                                             <td></td>
                                             <td class="text-right">
                                                 <p><strong>Subtotal:</strong></p>
-                                                <p><strong>배송비:</strong></p>
+                                                <p><strong>배송비</strong></p>
                                             </td>
                                             <td class="text-center">
-                                                <p><strong>{{tot}}</strong></p>
-                                                <p><strong>0</strong></p>
+                                                <p><strong>{{f_tot}}</strong></p>
+                                                <p><strong>3000</strong></p>
                                             </td>
                                         </tr>
                                         <tr>
@@ -186,7 +186,7 @@
                                                 <h4><strong>Total:</strong></h4>
                                             </td>
                                             <td class="text-center text-danger">
-                                                <h4><strong>{{tot}}</strong></h4>
+                                                <h4><strong>{{tot}}+3000</strong></h4>
                                             </td>
                                         </tr>
                                     </tbody>
