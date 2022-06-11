@@ -14,6 +14,7 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript" src="/static/js/finder.js?after"></script>
 <script type="text/javascript">
+	/*
 	function chk(){
 		let result = confirm("장바구니 페이지로 이동하시겠습니까?");
 		if(result){
@@ -29,6 +30,7 @@
 			
 		}
 	}
+	*/
 </script>
 </head>
 <body>
@@ -37,6 +39,7 @@
 		<a class="navbar-brand" href="#"><img src='../static/img/GO.png'></a>
 		<div class="box">
 	        <form action="show" method="get">
+	        	<input type="hidden" name = "products" value = "{{products}}"/>
 	            <input type="text" class="input" name="searchInput" id="searchInput"
 	            onmouseout="document.search.txt.value = ''">
 	        </form>
@@ -56,6 +59,7 @@
             <form class="form-floating mb-3" action="show" name="frm" method="get">
             {% for i in reco %}
            	 	<input type="hidden" name="searchInput" id="searchInput" value="{{i}}" readonly/>
+           	 	<input type="hidden" name = "products" value = "{{products}}"/>
            	 	<button type="submit" class="btn btn-primary mb-2"># {{i}}</button>
            	 {% endfor %}
            	 </form>
@@ -103,9 +107,42 @@
 			<div class="row sticky p-4 pb-4">
 				<div class="basket">
 					<h3>장바구니</h3>
+					  <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>상품명</th>
+		                        <th>가격</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% if products %}
+                            {% for pro in products %}
+                            <tr>
+                                <td>{{pro.name}}</td>
+                                <td>{{pro.price}}</td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                                <tr>
+                                    <td colspan="2">구매 상품 없음</td>
+                                </tr>
+                        {% endif %}
+                        </tbody>
+                    </table>
+                  
 				</div>
-				<div class="order">
-					<button class="w-100 py-2 mb-2 btn btn-outline-dark rounded-3" type="submit">비교하기</button>
+				<div class="order">                    
+				<form action="receipt" method="get">
+                    <input type="hidden" name = "products" value = "{{products}}"/>
+                    <input type="hidden" name = "g_products" value = "{{g_products}}"/>
+                    <input type="hidden" name = "f_products" value = "{{f_products}}"/>
+                    <input type="hidden" name = "tot" value = "{{tot}}"/>
+                    <input type="hidden" name = "g_tot" value = "{{g_tot}}"/>
+                    <input type="hidden" name = "f_tot" value = "{{f_tot}}"/>
+                     
+                    
+                    <button class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" type="submit">비교하기</button>
+                    </form>
 				</div>
 			</div>
 		</div>

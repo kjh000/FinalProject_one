@@ -39,23 +39,25 @@ def findFunc(request):
         print('GET 요청 처리')
         products = request.GET.get("products")
         # print('pros : ',pros,type(pros))
-        c = products[1:-1]
-        c = c.replace('{',"")
-        c = c.replace('}',"") 
         
-        c = c.split(',')
-        for i in range(len(c)):
-            j = c[i]
-            if i%2 == 0:
-                cc = {}
-                if i == 0:
-                    cc['name'] = j[9:-1]
+        if products:
+            c = products[1:-1]
+            c = c.replace('{',"")
+            c = c.replace('}',"") 
+            
+            c = c.split(',')
+            for i in range(len(c)):
+                j = c[i]
+                if i%2 == 0:
+                    cc = {}
+                    if i == 0:
+                        cc['name'] = j[9:-1]
+                    else:
+                        cc['name'] = j[10:-1]
                 else:
-                    cc['name'] = j[10:-1]
-            else:
-                cc['price'] = int(j[11:-1])
-                productss.append(cc)
-        
+                    cc['price'] = int(j[11:-1])
+                    productss.append(cc)
+            
         print(productss)
         
             
