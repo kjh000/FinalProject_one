@@ -13,6 +13,23 @@
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript" src="/static/js/finder.js?after"></script>
+<script type="text/javascript">
+	function chk(){
+		let result = confirm("장바구니 페이지로 이동하시겠습니까?");
+		if(result){
+			document.getElementByName("frm2").submit();
+		}else{
+			//document.
+			//event.preventDefault();
+			//event.stopPropagation(); 
+			//console.log("1");
+			//return false;
+			document.getElementByName("frm2").submit();
+			location.replace('show');
+			
+		}
+	}
+</script>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light" aria-label="Eighth navbar example">
@@ -61,16 +78,21 @@
 					</thead>
 					<tbody>
 					{% for df in dfl %}
-						<tr> <!-- form이 반복문 안에 있으면 유지 보수나 디버깅 할 때 안 좋다? 물어보기 -->
-							<form action="basket" name="frm" method="get" onsubmit="return confirm('장바구니 페이지로 이동하시겠습니까?');">
-								<td class='ta'>{{df.0}}</td>
-								<td class='tb'>{{df.2}}</td>
-								<td class='tc'>{{df.4}}<input type="hidden" name="name" id="name" value="{{df.4}}" readonly/></td>
-								<td>{{df.5}}<input type="hidden" name="price" id="price" value="{{df.5}}" readonly/></td>
-								<!-- <td><button class="btn btn-primary" type="button">담기</button></td> -->
-								<!-- <td><input class="btn btn-primary" type="button" value="담기" ></td> -->
-								<td><input class="btn btn-primary" type="submit" value="담기" ></td>
-							</form>
+						<tr>
+							<!-- <form action="basket" name="frm2" method="get" onsubmit="return chk()"> --> <!-- onsubmit = "return confirm('장바구니 페이지로 이동하시겠습니까?');" -->
+							<td class='ta'>{{df.0}}</td>
+							<td class='tb'>{{df.2}}</td>
+							<td class='tc'>{{df.4}}</td>
+							<td>{{df.5}}</td>
+							<!-- <td><button class="btn btn-primary" type="button">담기</button></td> -->
+							<!-- <td><input class="btn btn-primary" type="submit" value="담기" ></td> -->
+							<td>
+								<form action="basket" name="frm2" method="get" onsubmit="return chk()"> <!-- target="if" -->
+									<input type="hidden" name="name" id="name" value="{{df.4}}" readonly/>
+									<input type="hidden" name="price" id="price" value="{{df.5}}" readonly/>
+									<input class="btn btn-primary" type="submit" value="담기" >
+								</form>						
+							</td>
 						</tr>
 					{% endfor %}
 					</tbody>
