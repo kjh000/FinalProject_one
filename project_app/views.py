@@ -36,8 +36,15 @@ def mainFunc(request):
 def findFunc(request):
     if request.method =='GET':
         productss = []
+        g_productss = []
+        f_productss = []
         print('GET 요청 처리')
         products = request.GET.get("products")
+        g_products = request.GET.get("g_products")
+        f_products = request.GET.get("f_products")
+        tot = request.GET.get("tot")
+        g_tot = request.GET.get("g_tot")
+        f_tot = request.GET.get("f_tot")
         # print('pros : ',pros,type(pros))
         
         if products:
@@ -58,7 +65,44 @@ def findFunc(request):
                     cc['price'] = int(j[11:-1])
                     productss.append(cc)
             
-        print(productss)
+            
+        if g_products:
+            b = g_products[1:-1]
+            # a = products[:]
+            
+            b = b.replace('{',"")
+            b = b.replace('}',"") 
+            
+            b = b.split(',')
+            for i in range(len(b)):
+                j = b[i]
+                if i%2 == 0:
+                    bb = {}
+                    if i == 0:
+                        bb['name'] = j[9:-1]
+                    else:
+                        bb['name'] = j[10:-1]
+                else:
+                    bb['price'] = int(j[11:-1])
+                    g_productss.append(bb)
+        
+        if f_products:
+            c = f_products[1:-1]
+            c = c.replace('{',"")
+            c = c.replace('}',"") 
+            
+            c = c.split(',')
+            for i in range(len(c)):
+                j = c[i]
+                if i%2 == 0:
+                    cc = {}
+                    if i == 0:
+                        cc['name'] = j[9:-1]
+                    else:
+                        cc['name'] = j[10:-1]
+                else:
+                    cc['price'] = int(j[11:-1])
+                    f_productss.append(cc)
         
             
         irum = request.GET.get("searchInput")
@@ -90,7 +134,7 @@ def findFunc(request):
         
         print(n_reco)
         
-        return render(request,'finder.html',{'dfl':dfl, 'irum':irum,'reco':n_reco,'products':productss})
+        return render(request,'finder.html',{'dfl':dfl, 'irum':irum,'reco':n_reco,'products':productss,'g_products':g_productss,'f_products':f_productss,'tot':tot,'g_tot':g_tot,'tot':f_tot})
     else:
         print('error')
 
@@ -381,3 +425,4 @@ def receipt(request):
     
               
     return render(request,'receipt.html',{'products' : productss,'g_products' : g_productss,'f_products' : f_productss,'tot':tot,'g_tot':g_tot,'f_tot':f_tot})
+
