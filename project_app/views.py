@@ -35,8 +35,30 @@ def mainFunc(request):
 
 def findFunc(request):
     if request.method =='GET':
+        productss = []
         print('GET 요청 처리')
+        products = request.GET.get("products")
+        # print('pros : ',pros,type(pros))
+        c = products[1:-1]
+        c = c.replace('{',"")
+        c = c.replace('}',"") 
         
+        c = c.split(',')
+        for i in range(len(c)):
+            j = c[i]
+            if i%2 == 0:
+                cc = {}
+                if i == 0:
+                    cc['name'] = j[9:-1]
+                else:
+                    cc['name'] = j[10:-1]
+            else:
+                cc['price'] = int(j[11:-1])
+                productss.append(cc)
+        
+        print(productss)
+        
+            
         irum = request.GET.get("searchInput")
         print(irum)
         dfl = df[df['분류'].str.contains(irum) & df['지역'].str.contains("종로구")].values.tolist()
@@ -56,7 +78,7 @@ def findFunc(request):
             cnt = [dfv[i],items[ii]]
             # reco.append(items[ii])
             reco.append(cnt)
-        
+         
         # print(id,en_irum)
         
         reco.sort(reverse=True)
@@ -66,7 +88,7 @@ def findFunc(request):
         
         print(n_reco)
         
-        return render(request,'finder.html',{'dfl':dfl, 'irum':irum,'reco':n_reco})
+        return render(request,'finder.html',{'dfl':dfl, 'irum':irum,'reco':n_reco,'products':productss})
     else:
         print('error')
 
@@ -75,7 +97,9 @@ def searchFunc(request):
         print('GET 요청 처리')
         
         irum = request.GET.get("searchInput")
-        print(irum)
+        
+        
+        # print(irum)
         dfl = df[df['분류'].str.contains(irum) & df['지역'].str.contains("종로구")].values.tolist()
         dfl.sort(key=lambda x : x[5])
         
@@ -206,7 +230,9 @@ def basketFunc(request):
 
     # return render(request, 'basket.html', {'context' : context})
     
-    return render(request, 'basket.html', context)
+    # return render(request, 'basket.html', context)
+    return render(request, 'finder.html', context)
+
 
 def reFinderFunc(request):
     
