@@ -74,7 +74,7 @@ def searchFunc(request):
     if request.method =='GET':
         print('GET 요청 처리')
         
-        irum = request.GET.get("searchInput2")
+        irum = request.GET.get("searchInput")
         print(irum)
         dfl = df[df['분류'].str.contains(irum) & df['지역'].str.contains("종로구")].values.tolist()
         dfl.sort(key=lambda x : x[5])
