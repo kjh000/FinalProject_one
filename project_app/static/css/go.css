@@ -5,6 +5,16 @@ img {width :30%;height:30%;}
 	height:2rem; 
 	margin-bottom:1rem;
 }
+.sticky{
+	position: sticky; 
+	background-color: rgba(250, 250, 250); 
+	width: 100%; 
+	height: 475px; 
+	top: 270px; 
+	border-radius: 10px 20px 30px 40px;
+}
+.basket{height: 325px;}
+.order{height: 150px;}
 .choice{height: auto;}
 .ta{width:15%}
 .tb{width:25%}
@@ -28,7 +38,7 @@ img {width :30%;height:30%;}
 .box{
     position: absolute;
     top: 50%;
-    left: 80%;
+    left: 75%;
     transform: translate(-50%,-50%);
 }
 .input {
@@ -42,6 +52,7 @@ img {width :30%;height:30%;}
     font-family: Comic Sans MS;
     font-size: 26px;
     color: #000000;
+    background-color: rgba(250, 250, 250);
     outline: none;
     transition: .5s;
 }
@@ -52,11 +63,12 @@ img {width :30%;height:30%;}
 i{
     position: absolute;
     top: 50%;
-    right: 10px;
+    right: -6.5px;
     transform: translate(-50%,-50%);
-    font-size: 26px;
+    font-size: 40px;
     color: #000000;
     transition: .2s;
+    background-color: rgba(250, 250, 250);
 }
 .box:hover i{
     opacity: 0;
