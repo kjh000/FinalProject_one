@@ -34,34 +34,48 @@ def mainFunc(request):
     return render(request,'main.html', {'item':item})
 
 def findFunc(request):
-    if request.method =='GET':
+    # if request.method =='GET':
+    if request.method == 'POST':
+        # if "prod" in request.session:
+        #     productss = []
+        #     g_productss = []
+        #     f_productss = []
+        # else:
+        #     productss = request.session.get('prod')
+        #     g_productss = request.session.get('g_prod')
+        #     f_productss = request.session.get('f_prod')
+        
+
         productss = []
-        print('GET 요청 처리')
-        products = request.GET.get("products")
-        # print('pros : ',pros,type(pros))
+        g_productss = []
+        f_productss = []
+        
+
+        # products = request.GET.get("products")
+        # g_products = request.GET.get("g_products")
+        # f_products = request.GET.get("f_products")
+        # tot = request.GET.get("tot")
+        # g_tot = request.GET.get("g_tot")
+        # f_tot = request.GET.get("f_tot")
+        products = request.POST.get("products")
+        g_products = request.POST.get("g_products")
+        f_products = request.POST.get("f_products")
+        tot = request.POST.get("tot")
+        g_tot = request.POST.get("g_tot")
+        f_tot = request.POST.get("f_tot")
         
         if products:
-            c = products[1:-1]
-            c = c.replace('{',"")
-            c = c.replace('}',"") 
-            
-            c = c.split(',')
-            for i in range(len(c)):
-                j = c[i]
-                if i%2 == 0:
-                    cc = {}
-                    if i == 0:
-                        cc['name'] = j[9:-1]
-                    else:
-                        cc['name'] = j[10:-1]
-                else:
-                    cc['price'] = int(j[11:-1])
-                    productss.append(cc)
-            
-        print(productss)
+            productss = parsing2(products)
+        if g_products:
+            g_productss = parsing2(g_products)
+        if f_products:
+            f_productss = parsing2(f_products)
         
-            
-        irum = request.GET.get("searchInput")
+        print("productss : ",productss)
+
+        # irum = request.GET.get("searchInput")
+        irum = request.POST.get("searchInput")
+        
         print(irum)
         dfl = df[df['분류'].str.contains(irum) & df['지역'].str.contains("종로구")].values.tolist()
         dfl.sort(key=lambda x : x[5])
@@ -78,11 +92,10 @@ def findFunc(request):
             # 이거 like.csv 수정해야됨
             ii = items_e.index(idx[i])
             cnt = [dfv[i],items[ii]]
-            # reco.append(items[ii])
+            
             reco.append(cnt)
          
-        # print(id,en_irum)
-        
+       
         reco.sort(reverse=True)
         
         for i in reco[1:7]:
@@ -90,15 +103,19 @@ def findFunc(request):
         
         print(n_reco)
         
-        return render(request,'finder.html',{'dfl':dfl, 'irum':irum,'reco':n_reco,'products':productss})
+        return render(request,'finder.html',{'dfl':dfl, 'irum':irum,'reco':n_reco,'products':productss,'g_products':g_productss,'f_products':f_productss,'tot':tot,'g_tot':g_tot,'tot':f_tot})
+        # return render(request,'finder.html',{'dfl':dfl, 'irum':irum,'reco':n_reco,'products':products,'g_products':g_products,'f_products':f_products,'tot':tot,'g_tot':g_tot,'tot':f_tot})
+    
     else:
         print('error')
 
 def searchFunc(request):
-    if request.method =='GET':
-        print('GET 요청 처리')
+    # if request.method =='GET':
+    if request.method == 'POST':
+        # print('GET 요청 처리')
         
-        irum = request.GET.get("searchInput")
+        # irum = request.GET.get("searchInput")
+        irum = request.POST.get("searchInput")
         
         
         # print(irum)
@@ -152,10 +169,12 @@ def insertFunc(request):
         print('error')
 
 def basketFunc(request):
-    print('request GET : ', request.GET)
-    name = request.GET.get("name")
-    price = request.GET.get("price")
-    mart = request.GET.get("mart")
+    # name = request.GET.get("name")
+    # price = request.GET.get("price")
+    # mart = request.GET.get("mart")
+    name = request.POST.get("name")
+    price = request.POST.get("price")
+    mart = request.POST.get("mart")
     # print(price)
     # print(name)
     price = int(price)
@@ -217,8 +236,7 @@ def basketFunc(request):
     request.session["g_tot"] = g_tot
     request.session["f_tot"] = f_tot
     
-    # return HttpResponseRedirect("basket")
-    
+ 
     context = {} #html에 보낼 용도
     context['products'] = request.session['prod']
     context['g_products'] = request.session['g_prod']
@@ -311,58 +329,31 @@ def craw_fast(item):
 
 
 def receipt(request):
-    products = request.GET.get("products")
-    g_products = request.GET.get("g_products")
-    f_products = request.GET.get("f_products")
+    # products = request.GET.get("products")
+    # g_products = request.GET.get("g_products")
+    # f_products = request.GET.get("f_products")
+    #
+    # tot = request.GET.get("tot")
+    # g_tot = request.GET.get("g_tot")
+    # f_tot = request.GET.get("f_tot")
+    products = request.POST.get("products")
+    g_products = request.POST.get("g_products")
+    f_products = request.POST.get("f_products")
     
-    tot = request.GET.get("tot")
-    g_tot = request.GET.get("g_tot")
-    f_tot = request.GET.get("f_tot")
+    tot = request.POST.get("tot")
+    g_tot = request.POST.get("g_tot")
+    f_tot = request.POST.get("f_tot")
     
     
-    productss = []
-    a = products[1:-1]
-    # a = products[:]
+    productss = parsing2(products)
+    g_productss = parsing(g_products)    f_productss = parsing(f_products)
 
-    a = a.replace('{',"")
-    a = a.replace('}',"") 
-    
-    a = a.split(',')
-    for i in range(len(a)):
-        j = a[i]
-        # print(j)
-        if i%2 == 0:
-            aa = {}
-            if i == 0:
-                aa['name'] = j[9:-1]
-            else:
-                aa['name'] = j[10:-1]
-        else:
-            aa['price'] = int(j[10:])
-            productss.append(aa)
-            
-    g_productss = []
-    b = g_products[1:-1]
-    # a = products[:]
-    
-    b = b.replace('{',"")
-    b = b.replace('}',"") 
-    
-    b = b.split(',')
-    for i in range(len(b)):
-        j = b[i]
-        if i%2 == 0:
-            bb = {}
-            if i == 0:
-                bb['name'] = j[9:-1]
-            else:
-                bb['name'] = j[10:-1]
-        else:
-            bb['price'] = int(j[11:-1])
-            g_productss.append(bb)
-    
-    f_productss = []
-    c = f_products[1:-1]
+              
+    return render(request,'receipt.html',{'products' : productss,'g_products' : g_productss,'f_products' : f_productss,'tot':tot,'g_tot':g_tot,'f_tot':f_tot})
+
+def parsing(input):
+    output = []
+    c = input[1:-1]
     c = c.replace('{',"")
     c = c.replace('}',"") 
     
@@ -377,7 +368,30 @@ def receipt(request):
                 cc['name'] = j[10:-1]
         else:
             cc['price'] = int(j[11:-1])
-            f_productss.append(cc)
+            output.append(cc)
     
-              
-    return render(request,'receipt.html',{'products' : productss,'g_products' : g_productss,'f_products' : f_productss,'tot':tot,'g_tot':g_tot,'f_tot':f_tot})
+    return output
+
+def parsing2(input):
+    output = []
+    c = input[1:-1]
+    c = c.replace('{',"")
+    c = c.replace('}',"") 
+    
+    c = c.split(',')
+    for i in range(len(c)):
+        j = c[i]
+        if i%2 == 0:
+            cc = {}
+            if i == 0:
+                cc['name'] = j[9:-1]
+            else:
+                cc['name'] = j[10:-1]
+        else:
+            cc['price'] = int(j[10:])
+            output.append(cc)
+    
+    return output
+    
+    
+    

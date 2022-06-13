@@ -38,7 +38,7 @@
 	<div class="container">
 		<a class="navbar-brand" href="#"><img src='../static/img/GO.png'></a>
 		<div class="box">
-	        <form action="show" method="get">
+	        <form action="show" method="post">{% csrf_token %}
 	        	<input type="hidden" name = "products" value = "{{products}}"/>
 	            <input type="text" class="input" name="searchInput" id="searchInput"
 	            onmouseout="document.search.txt.value = ''">
@@ -56,13 +56,18 @@
 	<div class="row pt-4">
        	<div class="col-6" >
        		<h3>연관상품</h3>
-            <form class="form-floating mb-3" action="show" name="frm" method="get">
+            <form class="form-floating mb-3" action="show" name="frm" method="post">{% csrf_token %}
             {% for i in reco %}
            	 	<input type="hidden" name="searchInput" id="searchInput" value="{{i}}" readonly/>
            	 	<input type="hidden" name = "products" value = "{{products}}"/>
+    	 	    <input type="hidden" name = "g_products" value = "{{g_products}}"/>
+                <input type="hidden" name = "f_products" value = "{{f_products}}"/>
+                <input type="hidden" name = "tot" value = "{{tot}}"/>
+                <input type="hidden" name = "g_tot" value = "{{g_tot}}"/>
+                <input type="hidden" name = "f_tot" value = "{{f_tot}}"/>
            	 	<button type="submit" class="btn btn-primary mb-2"># {{i}}</button>
            	 {% endfor %}
-           	 </form>
+           	 </form> 
         </div>
 		<div class="col-md-6" ></div>
 	</div>
@@ -91,7 +96,7 @@
 							<!-- <td><button class="btn btn-primary" type="button">담기</button></td> -->
 							<!-- <td><input class="btn btn-primary" type="submit" value="담기" ></td> -->
 							<td>
-								<form action="basket" name="frm2" method="get" onsubmit="return chk()"> <!-- target="if" -->
+								<form action="basket" name="frm2" method="post" onsubmit="return chk()">{% csrf_token %} <!-- target="if" -->
 									<input type="hidden" name="name" id="name" value="{{df.4}}" readonly/>
 									<input type="hidden" name="price" id="price" value="{{df.5}}" readonly/>
 									<input class="btn btn-primary" type="submit" value="담기" >
@@ -132,7 +137,7 @@
                   
 				</div>
 				<div class="order">                    
-				<form action="receipt" method="get">
+				<form action="receipt" method="post">{% csrf_token %}
                     <input type="hidden" name = "products" value = "{{products}}"/>
                     <input type="hidden" name = "g_products" value = "{{g_products}}"/>
                     <input type="hidden" name = "f_products" value = "{{f_products}}"/>
@@ -142,7 +147,7 @@
                      
                     
                     <button class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" type="submit">비교하기</button>
-                    </form>
+               </form>
 				</div>
 			</div>
 		</div>

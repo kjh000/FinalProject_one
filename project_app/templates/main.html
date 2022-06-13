@@ -40,7 +40,7 @@
 		<h1><strong>장바구니</strong><img src='../static/img/GO.png'></h1>
 	</div>
 	<div class="center">
-        <form action="show" method="get">
+        <form action="show" method="post">{% csrf_token %}
             <input type="text" class="input" name="searchInput" id="searchInput"
             onmouseout="document.search.txt.value = ''">
         </form>
