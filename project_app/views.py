@@ -52,9 +52,9 @@ def findFunc(request):
         if products:
             productss = parsing2(products)
         if g_products:
-            g_productss = parsing2(g_products)
+            g_productss = parsing(g_products)
         if f_products:
-            f_productss = parsing2(f_products)
+            f_productss = parsing(f_products)
         
         print("productss : ",productss)
 
