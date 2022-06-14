@@ -41,9 +41,33 @@
 	</div>
 	<div class="center">
         <form action="show" method="post">{% csrf_token %}
-        	<input type="text" name="searchLoc" id="searchLoc">
-            <input type="text" name="searchInput" id="searchInput">
-            <button type="submit">제출</button>
+        	<table>
+        		<tr>
+        			<td>
+        				<select class="form-select" name="searchLoc" id="searchLoc">
+							<option value="">지역</option>
+							<option value="강남구">강남구</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
+							<option value="4">4</option>
+							<option value="5">5</option>
+							<option value="6">6</option>
+							<option value="7">7</option>
+							<option value="8">8</option>
+							<option value="9">9</option>
+							<option value="10">10</option>
+							<option value="11">11</option>
+							<option value="12">12</option>
+						</select>
+        			</td>
+        			<td>
+        				<div class="search-box">
+							<button class="btn-search"><i class="fas fa-search"></i></button>
+							<input type="text" class="input-search" name="searchInput" id="searchInput" placeholder="상품을 입력해주세요...">
+						</div>
+        			</td>
+        		</tr>
+        	</table>
         </form>
     </div>
 </body>
