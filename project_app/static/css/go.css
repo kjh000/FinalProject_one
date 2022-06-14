@@ -13,7 +13,10 @@ img {width :30%;height:30%;}
 	top: 270px; 
 	border-radius: 10px 20px 30px 40px;
 }
-.basket{height: 325px;}
+.basket{
+	height: 325px;
+	overflow:auto;
+}
 .order{height: 150px;}
 .choice{height: auto;}
 .main{
@@ -61,7 +64,7 @@ img {width :30%;height:30%;}
   color:#fff;
 }
 .input-search::placeholder{
-  color:rgba(255,255,255,.5);
+  color:rgba(255,255,255,.9);
   font-size: 18px;
   letter-spacing: 2px;
   font-weight: 100;
