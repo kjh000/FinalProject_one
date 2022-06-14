@@ -24,8 +24,9 @@
 		<div class="box">
 	        <form action="show" method="post">{% csrf_token %}
 	        	<input type="hidden" name = "products" value = "{{products}}"/>
+	        	<input type="hidden" name = "searchLoc" value = "{{loc}}"/>
 	            <input type="text" class="input" name="searchInput" id="searchInput">
-	            <input type="text" class="input" name="searchLoc" id="searchLoc">
+
 	        </form>
 	        <i class="fas fa-search"></i>
 	    </div>
@@ -50,6 +51,7 @@
                 <input type="hidden" name = "tot" value = "{{tot}}"/>
                 <input type="hidden" name = "g_tot" value = "{{g_tot}}"/>
                 <input type="hidden" name = "f_tot" value = "{{f_tot}}"/>
+                <input type="hidden" name = "searchLoc" value = "{{loc}}"/>
            	 	<button type="submit" class="btn btn-outline-dark mb-2 btn-lg"># {{i}}</button>
            	 </form> 
         
