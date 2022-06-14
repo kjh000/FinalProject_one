@@ -89,7 +89,7 @@ def findFunc(request):
         for i in reco[1:7]:
             n_reco.append(i[1])
         
-        print(n_reco)
+        
         
         return render(request,'finder.html',{'dfl':dfl, 'irum':irum,'reco':n_reco,'products':productss,'g_products':g_productss,'f_products':f_productss,'tot':tot,'g_tot':g_tot,'tot':f_tot,'loc':loc})
       
@@ -155,7 +155,6 @@ def basketFunc(request):
 
     name = request.POST.get("name")
     price = request.POST.get("price")
-    mart = request.POST.get("mart")
 
     price = int(price)
 
@@ -163,6 +162,38 @@ def basketFunc(request):
     productList = []
     gmarketList = [] # 지마켓 최저가 장바구니
     fastList = [] # 당일 배송 장바구니
+    
+    irum = request.POST.get("searchInput")   
+    loc=request.POST.get("searchLoc")
+   
+    
+    dfl = df[df['분류'].str.contains(irum) & df['지역'].str.contains(loc)].values.tolist()
+    dfl.sort(key=lambda x : x[5])
+    
+    if len(dfl) > 20:
+        dfl = dfl[:20]
+    
+    reco = []
+    n_reco = []
+    if irum:
+        id = items.index(irum)
+        en_irum = items_e[id]
+        
+        df_reco = df_r.loc[en_irum]
+        dfv = df_reco.values
+    
+        for i in range(len(dfv)):
+            # 이거 like.csv 수정해야됨
+            ii = items_e.index(idx[i])
+            cnt = [dfv[i],items[ii]]
+            
+            reco.append(cnt)
+     
+    
+        reco.sort(reverse=True)
+    
+    for i in reco[1:7]:
+        n_reco.append(i[1])
     
 
     
@@ -224,7 +255,11 @@ def basketFunc(request):
     context['tot'] = request.session['tot']
     context['g_tot'] = request.session['g_tot']
     context['f_tot'] = request.session['f_tot']
-
+    # dfl':dfl, 'irum':irum,'reco':n_reco
+    context['dfl'] = dfl
+    context['irum'] = irum
+    context['reco'] = n_reco
+    context['loc'] = loc
     request.session.set_expiry(30) #세션 시간 결정
 
     return render(request, 'finder.html', context)
