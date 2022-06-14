@@ -310,7 +310,7 @@ def craw_fast(item):
     item = parse.quote(item)
     url = "https://browse.gmarket.co.kr/search?keyword="
     url = url+item+"&t=e&tf=e:128935607"
-  
+
     html = urlopen(url)
     
     soup = BeautifulSoup(html,'html.parser')
