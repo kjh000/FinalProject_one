@@ -12,7 +12,8 @@ from urllib import parse
 # Create your views here.
 items=['간장', '계란', '고추장', '과자', '기저귀', '껌', '냉동만두', '된장', '두루마리화장지', '두부', '라면', '마요네즈', '맛김', '맛살', '맥주', '밀가루', '분유', '사이다', '생리대', '생수', '샴푸', '설탕', '세탁세제', '소주', '시리얼', '식용유', '쌈장', '아이스크림', '어묵', '오렌지주스', '우유', '즉석밥', '참기름', '참치 캔', '커피', '케첩', '콜라', '햄']
 names = ['지역','마켓종류','마트이름','분류','품목','가격']
-
+# loc=['강남구','강동구','강서구']
+# 간장 같은거 영문으로 => 연관상품 매칭
 items_e = ['ganjang','yakult','gochu','snack','hip','gum','mando','doenjang','hyuji','dobu','ramen','mayonnaise','kim','crab','hite','garu','powder','cider','napkin','water','shampoo','sugar','pongpong','soju','seereal','oil','ssamjang','ice','fish','juice','milk','rice','chamoil','chamchi','coffee','ketchup','colla','ham']
 idx = ['ramen','water','colla','rice','snack','gum','ice','garu','seereal','dobu','mando','sugar','gochu','doenjang','ssamjang','oil','ganjang','ketchup','mayonnaise','chamoil','kim','fish','crab','chamchi','ham','powder','juice','cider','coffee','milk','yakult','hite','soju','hip','hyuji','napkin','shampoo','pongpong']
 dir = os.path.dirname(os.path.realpath(__file__))
@@ -20,8 +21,8 @@ dir = os.path.dirname(os.path.realpath(__file__))
 ldata = dir + '\static\csvs\local_mart.csv'
 rdata = dir + '\static\csvs\like.csv'
 
-local = pd.read_csv(ldata, header = None,names = names)
-reco = pd.read_csv(rdata, header = None)
+local = pd.read_csv(ldata, header = None, names = names) # 지역마트 정보
+reco = pd.read_csv(rdata, header = None) # 연관상품 관련
 
 
 df = pd.DataFrame(local)
@@ -34,29 +35,13 @@ def mainFunc(request):
     return render(request,'main.html', {'item':item})
 
 def findFunc(request):
-    # if request.method =='GET':
     if request.method == 'POST':
-        # if "prod" in request.session:
-        #     productss = []
-        #     g_productss = []
-        #     f_productss = []
-        # else:
-        #     productss = request.session.get('prod')
-        #     g_productss = request.session.get('g_prod')
-        #     f_productss = request.session.get('f_prod')
-        
+       
 
         productss = []
         g_productss = []
         f_productss = []
-        
-
-        # products = request.GET.get("products")
-        # g_products = request.GET.get("g_products")
-        # f_products = request.GET.get("f_products")
-        # tot = request.GET.get("tot")
-        # g_tot = request.GET.get("g_tot")
-        # f_tot = request.GET.get("f_tot")
+       
         products = request.POST.get("products")
         g_products = request.POST.get("g_products")
         f_products = request.POST.get("f_products")
@@ -73,11 +58,15 @@ def findFunc(request):
         
         print("productss : ",productss)
 
-        # irum = request.GET.get("searchInput")
         irum = request.POST.get("searchInput")
         
+        
+        loc=request.POST.get("searchLoc")
+        
+        
+        
         print(irum)
-        dfl = df[df['분류'].str.contains(irum) & df['지역'].str.contains("종로구")].values.tolist()
+        dfl = df[df['분류'].str.contains(irum) & df['지역'].str.contains(loc)].values.tolist()
         dfl.sort(key=lambda x : x[5])
         
         reco = []
@@ -116,10 +105,10 @@ def searchFunc(request):
         
         # irum = request.GET.get("searchInput")
         irum = request.POST.get("searchInput")
-        
+        loc=request.POST.get("searchLoc")
         
         # print(irum)
-        dfl = df[df['분류'].str.contains(irum) & df['지역'].str.contains("종로구")].values.tolist()
+        dfl = df[df['분류'].str.contains(irum) & df['지역'].str.contains(loc)].values.tolist()
         dfl.sort(key=lambda x : x[5])
         
         reco = []
