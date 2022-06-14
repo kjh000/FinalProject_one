@@ -58,56 +58,52 @@ def findFunc(request):
         
         print("productss : ",productss)
 
-        irum = request.POST.get("searchInput")
-        
-        
+        irum = request.POST.get("searchInput")   
         loc=request.POST.get("searchLoc")
         
-        
-        
-        print(irum)
         dfl = df[df['분류'].str.contains(irum) & df['지역'].str.contains(loc)].values.tolist()
         dfl.sort(key=lambda x : x[5])
         
+        if len(dfl) > 20:
+            dfl = dfl[:20]
+        
         reco = []
         n_reco = []
-        id = items.index(irum)
-        en_irum = items_e[id]
-        
-        df_reco = df_r.loc[en_irum]
-        dfv = df_reco.values
-        
-        for i in range(len(dfv)):
-            # 이거 like.csv 수정해야됨
-            ii = items_e.index(idx[i])
-            cnt = [dfv[i],items[ii]]
+        if irum:
+            id = items.index(irum)
+            en_irum = items_e[id]
             
-            reco.append(cnt)
+            df_reco = df_r.loc[en_irum]
+            dfv = df_reco.values
+        
+            for i in range(len(dfv)):
+                # 이거 like.csv 수정해야됨
+                ii = items_e.index(idx[i])
+                cnt = [dfv[i],items[ii]]
+                
+                reco.append(cnt)
          
-       
-        reco.sort(reverse=True)
+        
+            reco.sort(reverse=True)
         
         for i in reco[1:7]:
             n_reco.append(i[1])
         
         print(n_reco)
         
-        return render(request,'finder.html',{'dfl':dfl, 'irum':irum,'reco':n_reco,'products':productss,'g_products':g_productss,'f_products':f_productss,'tot':tot,'g_tot':g_tot,'tot':f_tot})
-        # return render(request,'finder.html',{'dfl':dfl, 'irum':irum,'reco':n_reco,'products':products,'g_products':g_products,'f_products':f_products,'tot':tot,'g_tot':g_tot,'tot':f_tot})
-    
+        return render(request,'finder.html',{'dfl':dfl, 'irum':irum,'reco':n_reco,'products':productss,'g_products':g_productss,'f_products':f_productss,'tot':tot,'g_tot':g_tot,'tot':f_tot,'loc':loc})
+      
     else:
         print('error')
 
 def searchFunc(request):
-    # if request.method =='GET':
+    
     if request.method == 'POST':
-        # print('GET 요청 처리')
-        
-        # irum = request.GET.get("searchInput")
+
         irum = request.POST.get("searchInput")
         loc=request.POST.get("searchLoc")
         
-        # print(irum)
+
         dfl = df[df['분류'].str.contains(irum) & df['지역'].str.contains(loc)].values.tolist()
         dfl.sort(key=lambda x : x[5])
         
@@ -120,14 +116,12 @@ def searchFunc(request):
         dfv = df_reco.values
         
         for i in range(len(dfv)):
-            # 이거 like.csv 수정해야됨
+
             ii = items_e.index(idx[i])
             cnt = [dfv[i],items[ii]]
-            # reco.append(items[ii])
+
             reco.append(cnt)
-        
-        # print(id,en_irum)
-        
+
         reco.sort(reverse=True)
         
         for i in reco[1:7]:
@@ -158,16 +152,13 @@ def insertFunc(request):
         print('error')
 
 def basketFunc(request):
-    # name = request.GET.get("name")
-    # price = request.GET.get("price")
-    # mart = request.GET.get("mart")
+
     name = request.POST.get("name")
     price = request.POST.get("price")
     mart = request.POST.get("mart")
-    # print(price)
-    # print(name)
+
     price = int(price)
-    # print(type(price))
+
     product = {"name" : name, "price" : price}
     productList = []
     gmarketList = [] # 지마켓 최저가 장바구니
@@ -235,11 +226,7 @@ def basketFunc(request):
     context['f_tot'] = request.session['f_tot']
 
     request.session.set_expiry(30) #세션 시간 결정
-    
 
-    # return render(request, 'basket.html', {'context' : context})
-    
-    # return render(request, 'basket.html', context)
     return render(request, 'finder.html', context)
 
 
@@ -255,7 +242,6 @@ def craw_gmarket(item):
     
     item = parse.quote(item)
     url = "https://browse.gmarket.co.kr/search?keyword="
-    # url = url+item+"&t=s"
     url = url+item
   
     html = urlopen(url)
@@ -318,13 +304,7 @@ def craw_fast(item):
 
 
 def receipt(request):
-    # products = request.GET.get("products")
-    # g_products = request.GET.get("g_products")
-    # f_products = request.GET.get("f_products")
-    #
-    # tot = request.GET.get("tot")
-    # g_tot = request.GET.get("g_tot")
-    # f_tot = request.GET.get("f_tot")
+
     products = request.POST.get("products")
     g_products = request.POST.get("g_products")
     f_products = request.POST.get("f_products")
@@ -333,12 +313,14 @@ def receipt(request):
     g_tot = request.POST.get("g_tot")
     f_tot = request.POST.get("f_tot")
     
+    g_tot3 = int(g_tot) + 3000
+    f_tot3 = int(f_tot) + 3000
     
     productss = parsing2(products)
     g_productss = parsing(g_products)    f_productss = parsing(f_products)
 
               
-    return render(request,'receipt.html',{'products' : productss,'g_products' : g_productss,'f_products' : f_productss,'tot':tot,'g_tot':g_tot,'f_tot':f_tot})
+    return render(request,'receipt.html',{'products' : productss,'g_products' : g_productss,'f_products' : f_productss,'tot':tot,'g_tot':g_tot,'f_tot':f_tot,'g_tot3':g_tot3,'f_tot3':f_tot3})
 
 def parsing(input):
     output = []
