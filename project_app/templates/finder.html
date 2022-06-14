@@ -86,6 +86,8 @@
 								<form action="basket" name="frm2" method="post" onsubmit="return chk()">{% csrf_token %} <!-- target="if" -->
 									<input type="hidden" name="name" id="name" value="{{df.4}}" readonly/>
 									<input type="hidden" name="price" id="price" value="{{df.5}}" readonly/>
+									<input type="hidden" name = "searchLoc" value = "{{loc}}"/>
+									<input type="hidden" name = "searchInput" value = "{{irum}}"/>
 									<input class="btn btn-outline-dark" type="submit" value="담기" >
 								</form>						
 							</td>
