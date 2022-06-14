@@ -18,8 +18,12 @@ items_e = ['ganjang','yakult','gochu','snack','hip','gum','mando','doenjang','hy
 idx = ['ramen','water','colla','rice','snack','gum','ice','garu','seereal','dobu','mando','sugar','gochu','doenjang','ssamjang','oil','ganjang','ketchup','mayonnaise','chamoil','kim','fish','crab','chamchi','ham','powder','juice','cider','coffee','milk','yakult','hite','soju','hip','hyuji','napkin','shampoo','pongpong']
 dir = os.path.dirname(os.path.realpath(__file__))
 
-ldata = dir + '\static\csvs\local_mart.csv'
-rdata = dir + '\static\csvs\like.csv'
+# ldata = dir + '\static\csvs\local_mart.csv'
+# rdata = dir + '\static\csvs\like.csv'
+
+# 위에 거가 맞는거
+ldata = dir + '/static/csvs/local_mart.csv'
+rdata = dir + '/static/csvs/like.csv'
 
 local = pd.read_csv(ldata, header = None, names = names) # 지역마트 정보
 reco = pd.read_csv(rdata, header = None) # 연관상품 관련
