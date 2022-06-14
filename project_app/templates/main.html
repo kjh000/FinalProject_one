@@ -41,10 +41,10 @@
 	</div>
 	<div class="center">
         <form action="show" method="post">{% csrf_token %}
-            <input type="text" class="input" name="searchInput" id="searchInput"
-            onmouseout="document.search.txt.value = ''">
+        	<input type="text" name="searchLoc" id="searchLoc">
+            <input type="text" name="searchInput" id="searchInput">
+            <button type="submit">제출</button>
         </form>
-        <i class="fas fa-search"></i>
     </div>
 </body>
 </html>

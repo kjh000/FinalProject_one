@@ -14,23 +14,7 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript" src="/static/js/finder.js?after"></script>
 <script type="text/javascript">
-	/*
-	function chk(){
-		let result = confirm("장바구니 페이지로 이동하시겠습니까?");
-		if(result){
-			document.getElementByName("frm2").submit();
-		}else{
-			//document.
-			//event.preventDefault();
-			//event.stopPropagation(); 
-			//console.log("1");
-			//return false;
-			document.getElementByName("frm2").submit();
-			location.replace('show');
-			
-		}
-	}
-	*/
+
 </script>
 </head>
 <body>
@@ -40,24 +24,25 @@
 		<div class="box">
 	        <form action="show" method="post">{% csrf_token %}
 	        	<input type="hidden" name = "products" value = "{{products}}"/>
-	            <input type="text" class="input" name="searchInput" id="searchInput"
-	            onmouseout="document.search.txt.value = ''">
+	            <input type="text" class="input" name="searchInput" id="searchInput">
+	            <input type="text" class="input" name="searchLoc" id="searchLoc">
 	        </form>
 	        <i class="fas fa-search"></i>
 	    </div>
 	</div>
 </nav>
-<div class="container">
+<div class="container rounded-4 shadow p-4">
 	<div class="row p-4">
 		<div class="col text-center ">
 			<h1><strong>{{irum}}</strong></h1>
 		</div>
 	</div>
 	<div class="row pt-4">
-       	<div class="col-6" >
-       		<h3>연관상품</h3>
-            <form class="form-floating mb-3" action="show" name="frm" method="post">{% csrf_token %}
-            {% for i in reco %}
+	
+		<h3>연관상품</h3>
+		{% for i in reco %}
+       	
+            <form class="form col" action="show" name="frm" method="post">{% csrf_token %}
            	 	<input type="hidden" name="searchInput" id="searchInput" value="{{i}}" readonly/>
            	 	<input type="hidden" name = "products" value = "{{products}}"/>
     	 	    <input type="hidden" name = "g_products" value = "{{g_products}}"/>
@@ -65,23 +50,23 @@
                 <input type="hidden" name = "tot" value = "{{tot}}"/>
                 <input type="hidden" name = "g_tot" value = "{{g_tot}}"/>
                 <input type="hidden" name = "f_tot" value = "{{f_tot}}"/>
-           	 	<button type="submit" class="btn btn-primary mb-2"># {{i}}</button>
-           	 {% endfor %}
+           	 	<button type="submit" class="btn btn-outline-dark mb-2 btn-lg"># {{i}}</button>
            	 </form> 
-        </div>
-		<div class="col-md-6" ></div>
+        
+        {% endfor %}
+     
 	</div>
 	<div class="row">
     	<hr/>
         <div class="col-md-9">
 			<div class="row item">
-				<table class="table table-hover">
+				<table class="table table-hover p-4 rounded-4 shadow">
 					<thead>
 						<tr>
-							<th>지역</th>
-							<th>마트이름</th>
-							<th>제품명</th>
-							<th>가격</th>
+							<th style="width: 15%">지역</th>
+							<th style="width: 25%">마트이름</th>
+							<th style="width: 40%">제품명</th>
+							<th style="width: 25%">가격</th>
 							<th></th>
 						</tr>
 					</thead>
@@ -89,9 +74,9 @@
 					{% for df in dfl %}
 						<tr>
 							<!-- <form action="basket" name="frm2" method="get" onsubmit="return chk()"> --> <!-- onsubmit = "return confirm('장바구니 페이지로 이동하시겠습니까?');" -->
-							<td class='ta'>{{df.0}}</td>
-							<td class='tb'>{{df.2}}</td>
-							<td class='tc'>{{df.4}}</td>
+							<td>{{df.0}}</td>
+							<td>{{df.2}}</td>
+							<td>{{df.4}}</td>
 							<td>{{df.5}}</td>
 							<!-- <td><button class="btn btn-primary" type="button">담기</button></td> -->
 							<!-- <td><input class="btn btn-primary" type="submit" value="담기" ></td> -->
@@ -99,7 +84,7 @@
 								<form action="basket" name="frm2" method="post" onsubmit="return chk()">{% csrf_token %} <!-- target="if" -->
 									<input type="hidden" name="name" id="name" value="{{df.4}}" readonly/>
 									<input type="hidden" name="price" id="price" value="{{df.5}}" readonly/>
-									<input class="btn btn-primary" type="submit" value="담기" >
+									<input class="btn btn-outline-dark" type="submit" value="담기" >
 								</form>						
 							</td>
 						</tr>
@@ -108,8 +93,8 @@
 				</table>
 			</div>
 		</div>
-		<div class="col-md-3">
-			<div class="row sticky p-4 pb-4">
+		<div class="col-md-3 p-4">
+			<div class="row sticky rounded-4 shadow p-4 pb-4">
 				<div class="basket">
 					<h3>장바구니</h3>
 					  <table class="table table-hover">
@@ -137,17 +122,15 @@
                   
 				</div>
 				<div class="order">                    
-				<form action="receipt" method="post">{% csrf_token %}
-                    <input type="hidden" name = "products" value = "{{products}}"/>
-                    <input type="hidden" name = "g_products" value = "{{g_products}}"/>
-                    <input type="hidden" name = "f_products" value = "{{f_products}}"/>
-                    <input type="hidden" name = "tot" value = "{{tot}}"/>
-                    <input type="hidden" name = "g_tot" value = "{{g_tot}}"/>
-                    <input type="hidden" name = "f_tot" value = "{{f_tot}}"/>
-                     
-                    
-                    <button class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" type="submit">비교하기</button>
-               </form>
+					<form action="receipt" method="post">{% csrf_token %}
+	                    <input type="hidden" name = "products" value = "{{products}}"/>
+	                    <input type="hidden" name = "g_products" value = "{{g_products}}"/>
+	                    <input type="hidden" name = "f_products" value = "{{f_products}}"/>
+	                    <input type="hidden" name = "tot" value = "{{tot}}"/>
+	                    <input type="hidden" name = "g_tot" value = "{{g_tot}}"/>
+	                    <input type="hidden" name = "f_tot" value = "{{f_tot}}"/>
+	                    <button class="w-100 mb-2 btn btn-lg btn-outline-dark rounded-3" type="submit">비교하기</button>
+	               </form>
 				</div>
 			</div>
 		</div>
