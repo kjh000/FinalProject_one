@@ -175,31 +175,36 @@ def basketFunc(request):
     
     g_df = craw_gmarket(name)
     f_df = craw_fast(name)
+
     if g_df.empty:
         g_product = {"name" : 'None',"price":0}
-        f_product = {"name" : 'None',"price":0}
         
     else:
         g_df[1] = g_df[1].replace(',',"")
-        f_df[1] = f_df[1].replace(',',"")
-        
-        g_df[1] = int(g_df[1])
-        f_df[1] = int(f_df[1])
-        
-        
+        g_df[1] = int(g_df[1])        
         g_product = {"name" : g_df[0],"price":g_df[1]}
-        f_product = {"name" : f_df[0],"price":f_df[1]}
-
-    Gbasket(
+        
+        Gbasket(
         pname = g_df[0],
         price = g_df[1]
             ).save()
-    
-    Fbasket(
+
+######################
+    if f_df.empty:
+        f_product = {"name" : 'None',"price":0}
+        
+    else:
+        f_df[1] = f_df[1].replace(',',"")
+        f_df[1] = int(f_df[1])
+        f_product = {"name" : f_df[0],"price":f_df[1]}
+        
+        Fbasket(
         pname = f_df[0],
         price = f_df[1]
     
         ).save()
+
+
     datas = Basket.objects.all()
     Basket(
         pname =name,
@@ -348,9 +353,15 @@ def receipt(request):
     context['tot'] = sum['price__sum']
     context['g_tot'] = gsum['price__sum']
     context['f_tot'] = fsum['price__sum']
-    context['g_tot3'] = gsum['price__sum']+3000
-    context['f_tot3'] = fsum['price__sum']+3000
     
+    if gsum['price__sum']:
+        context['g_tot3'] = gsum['price__sum']+3000
+    else:
+        context['g_tot3'] = 3000
+    if fsum['price__sum']:
+        context['f_tot3'] = fsum['price__sum']+3000
+    else:
+        context['f_tot'] = 3000
     
     
     
