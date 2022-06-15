@@ -8,6 +8,8 @@ from urllib.request import urlopen
 from bs4 import BeautifulSoup
 import urllib.request as req
 from urllib import parse
+from project_app.models import Basket, Gbasket, Fbasket
+from django.db.models import Sum
 
 # Create your views here.
 items=['간장', '계란', '고추장', '과자', '기저귀', '껌', '냉동만두', '된장', '두루마리화장지', '두부', '라면', '마요네즈', '맛김', '맛살', '맥주', '밀가루', '분유', '사이다', '생리대', '생수', '샴푸', '설탕', '세탁세제', '소주', '시리얼', '식용유', '쌈장', '아이스크림', '어묵', '오렌지주스', '우유', '즉석밥', '참기름', '참치 캔', '커피', '케첩', '콜라', '햄']
@@ -60,6 +62,8 @@ def findFunc(request):
         g_tot = request.POST.get("g_tot")
         f_tot = request.POST.get("f_tot")
         
+        datas = Basket.objects.all()
+        
         if products:
             productss = parsing2(products)
         if g_products:
@@ -102,7 +106,7 @@ def findFunc(request):
         
         
         
-        return render(request,'finder.html',{'dfl':dfl, 'irum':irum,'reco':n_reco,'products':productss,'g_products':g_productss,'f_products':f_productss,'tot':tot,'g_tot':g_tot,'tot':f_tot,'loc':loc})
+        return render(request,'finder.html',{'datas':datas,'dfl':dfl, 'irum':irum,'reco':n_reco,'products':productss,'g_products':g_productss,'f_products':f_productss,'tot':tot,'g_tot':g_tot,'tot':f_tot,'loc':loc})
       
     else:
         print('error')
@@ -166,8 +170,42 @@ def basketFunc(request):
 
     name = request.POST.get("name")
     price = request.POST.get("price")
-
     price = int(price)
+    
+    
+    g_df = craw_gmarket(name)
+    f_df = craw_fast(name)
+    if g_df.empty:
+        g_product = {"name" : 'None',"price":0}
+        f_product = {"name" : 'None',"price":0}
+        
+    else:
+        g_df[1] = g_df[1].replace(',',"")
+        f_df[1] = f_df[1].replace(',',"")
+        
+        g_df[1] = int(g_df[1])
+        f_df[1] = int(f_df[1])
+        
+        
+        g_product = {"name" : g_df[0],"price":g_df[1]}
+        f_product = {"name" : f_df[0],"price":f_df[1]}
+
+    Gbasket(
+        pname = g_df[0],
+        price = g_df[1]
+            ).save()
+    
+    Fbasket(
+        pname = f_df[0],
+        price = f_df[1]
+    
+        ).save()
+    datas = Basket.objects.all()
+    Basket(
+        pname =name,
+        price = price
+        ).save()
+    
 
     product = {"name" : name, "price" : price}
     productList = []
@@ -205,73 +243,16 @@ def basketFunc(request):
     
     for i in reco[1:7]:
         n_reco.append(i[1])
-    
 
-    
-    g_df = craw_gmarket(name)
-    if g_df.empty:
-        g_product = {"name" : 'None',"price":'0'}
-    else:
-        g_product = {"name" : g_df[0],"price":g_df[1]}
-    
-    f_df = craw_fast(name)
-    if f_df.empty:
-        f_product = {"name" : 'None',"price":'0'}
-    else:
-        f_product = {"name" : f_df[0],"price":f_df[1]}
-    
-    if "prod" in request.session: #session이 생성되어있지 않으면, 즉 첫 번째 상품이 아니라면 productList에 상품 정보 저장하기
-        productList = request.session["prod"]
-        gmarketList = request.session["g_prod"]
-        fastList = request.session["f_prod"]
-        productList.append(product)
-        gmarketList.append(g_product)
-        fastList.append(f_product)
-        request.session["prod"] = productList
-        request.session["g_prod"] = gmarketList
-        request.session["f_prod"] = fastList
-        
-        
-        print("세션 유효 시간 : ", request.session.get_expiry_age())
-    else: #session에 shop이 없으면 productList에 상품을 넣고 request.session에 "shop" 이라는 키를 만든다
-        productList.append(product)
-        request.session["prod"] = productList
-        gmarketList.append(g_product)
-        request.session["g_prod"] = gmarketList
-        fastList.append(f_product)
-        request.session["f_prod"] = fastList
-    
-    
-    
-    tot,g_tot,f_tot = 0,0,0
-    for p in request.session['prod']:
-        tot += p["price"]
-    
-    for g in request.session['g_prod']:
-        g['price']=g['price'].replace(',',"")
-        g_tot += int(g["price"])
-    for f in request.session['f_prod']:
-        f['price']=f['price'].replace(',',"")
-        f_tot += int(f["price"])
-        
-    request.session["tot"] = tot
-    request.session["g_tot"] = g_tot
-    request.session["f_tot"] = f_tot
-    
+
  
     context = {} #html에 보낼 용도
-    context['products'] = request.session['prod']
-    context['g_products'] = request.session['g_prod']
-    context['f_products'] = request.session['f_prod']
-    context['tot'] = request.session['tot']
-    context['g_tot'] = request.session['g_tot']
-    context['f_tot'] = request.session['f_tot']
-    # dfl':dfl, 'irum':irum,'reco':n_reco
+
     context['dfl'] = dfl
     context['irum'] = irum
     context['reco'] = n_reco
     context['loc'] = loc
-    request.session.set_expiry(30) #세션 시간 결정
+    context['datas'] = datas
 
     return render(request, 'finder.html', context)
 
@@ -348,43 +329,32 @@ def craw_fast(item):
     else:
         return g_df.iloc[0]
 
-# def buyFunc(request):
-    #session = requests.session()
-    # if "prod" in request.session: #이전에 줬던 session과 키 동일하게 줘야함
-    #     prodList = request.session['prod']
-    #     #print(request.session['prod'])
-    #     print(prodList)
-    #     #print(session.cookies.get_dict())
-    #     del request.session['prod']
-    #     #print(request.session['prod'])
-    #     #print(session.cookies.get_dict())
-    #
-    # return render(request, "buy.html")
-    #if "prod" in request.session:
-    #    prodList = request.session['prod']
-    #    print(prodList)
-    #    del request.session['prod']
-    #item=items
-    #return render(request,'main.html', {'item':item})
 
 def receipt(request):
 
-    products = request.POST.get("products")
-    g_products = request.POST.get("g_products")
-    f_products = request.POST.get("f_products")
-    
-    tot = request.POST.get("tot")
-    g_tot = request.POST.get("g_tot")
-    f_tot = request.POST.get("f_tot")
-    
-    g_tot3 = int(g_tot) + 3000
-    f_tot3 = int(f_tot) + 3000
-    
-    productss = parsing2(products)
-    g_productss = parsing(g_products)    f_productss = parsing(f_products)
 
-              
-    return render(request,'receipt.html',{'products' : productss,'g_products' : g_productss,'f_products' : f_productss,'tot':tot,'g_tot':g_tot,'f_tot':f_tot,'g_tot3':g_tot3,'f_tot3':f_tot3})
+    datas = Basket.objects.all()
+    gdatas = Gbasket.objects.all()
+    fdatas = Fbasket.objects.all()
+    
+    sum = Basket.objects.aggregate(Sum('price'))
+    gsum = Gbasket.objects.aggregate(Sum('price'))
+    fsum = Fbasket.objects.aggregate(Sum('price'))
+    
+    context ={}
+    context['products'] = datas
+    context['g_products'] = gdatas
+    context['f_products'] = fdatas
+    context['tot'] = sum['price__sum']
+    context['g_tot'] = gsum['price__sum']
+    context['f_tot'] = fsum['price__sum']
+    context['g_tot3'] = gsum['price__sum']+3000
+    context['f_tot3'] = fsum['price__sum']+3000
+    
+    
+    
+    
+    return render(request,'receipt.html',context)
 
 def parsing(input):
     output = []
@@ -406,7 +376,7 @@ def parsing(input):
             output.append(cc)
     
     return output
-
+# 진짜 끝
 def parsing2(input):
     output = []
     c = input[1:-1]
@@ -427,6 +397,48 @@ def parsing2(input):
             output.append(cc)
     
     return output
+
+def clearFunc(request):
+    irum = request.POST.get("searchInput")   
+    loc=request.POST.get("searchLoc")
+   
+    Basket.objects.all().delete()
+    Gbasket.objects.all().delete()
+    Fbasket.objects.all().delete()
     
     
+    dfl = df[df['분류'].str.contains(irum) & df['지역'].str.contains(loc)].values.tolist()
+    dfl.sort(key=lambda x : x[5])
+    
+    if len(dfl) > 20:
+        dfl = dfl[:20]
+    
+    reco = []
+    n_reco = []
+    if irum:
+        id = items.index(irum)
+        en_irum = items_e[id]
+        
+        df_reco = df_r.loc[en_irum]
+        dfv = df_reco.values
+    
+        for i in range(len(dfv)):
+            # 이거 like.csv 수정해야됨
+            ii = items_e.index(idx[i])
+            cnt = [dfv[i],items[ii]]
+            
+            reco.append(cnt)
+     
+    
+        reco.sort(reverse=True)
+    
+    for i in reco[1:7]:
+        n_reco.append(i[1])
+    
+    context = {}
+    context['dfl'] = dfl
+    context['irum'] = irum
+    context['reco'] = n_reco
+    context['loc'] = loc
+    return render(request,'finder.html',context)
     

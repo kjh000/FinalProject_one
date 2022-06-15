@@ -112,10 +112,10 @@
 	                            </tr>
 	                        </thead>
 	                        <tbody>
-	                        {% if products %}
-	                            {% for pro in products %}
+	                        {% if datas %}
+	                            {% for pro in datas %}
 	                            <tr>
-	                                <td><strong>{{pro.name}}</strong></td>
+	                                <td><strong>{{pro.pname}}</strong></td>
 	                                <td>{{pro.price}}</td>
 	                            </tr>
 	                            {% endfor %}
@@ -137,6 +137,11 @@
 		                    <input type="hidden" name = "g_tot" value = "{{g_tot}}"/>
 		                    <input type="hidden" name = "f_tot" value = "{{f_tot}}"/>
 		                    <button class="w-100 mb-2 btn btn-warning btn-lg rounded-3" type="submit">비교하기</button>
+		               </form>
+		               <form action="clear" method='post'>{% csrf_token %}
+	            			<input type="hidden" name = "searchLoc" value = "{{loc}}"/>
+							<input type="hidden" name = "searchInput" value = "{{irum}}"/>
+							<button class="w-100 mb-2 btn btn-warning btn-lg rounded-3" type="submit">비우기</button>
 		               </form>
 					</div>
 				</div>

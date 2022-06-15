@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+import pymysql
+pymysql.version_info = (1,4,2,'final',0)
+pymysql.install_as_MySQLdb()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +28,7 @@ SECRET_KEY = 'django-insecure-#ulla9k!dxiv3fe6%trhyc%vc-rh%bvcek*a!bg=^#bz_dt=!u
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['52.78.173.150']
+ALLOWED_HOSTS = ['52.78.173.150','127.0.0.1','15.164.98.250']
 
 
 # Application definition
@@ -80,15 +83,16 @@ WSGI_APPLICATION = 'FinalProject_one.wsgi.application'
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'testdb',
-        'USER': 'kjh',
-        'PASSWORD': 'testdb123',
-        'HOST': 'testdb.czax00bc0hzh.us-east-1.rds.amazonaws.com',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'test',
+        'USER': 'test',
+        'PASSWORD': 'test1234',
+        'HOST': 'test.c6ogfh6r0wh5.ap-northeast-2.rds.amazonaws.com',
         'PORT': 3306
-        
+
     }
 }
 
