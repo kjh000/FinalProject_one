@@ -376,7 +376,7 @@ def parsing(input):
             output.append(cc)
     
     return output
-# 진짜 끝
+# 진짜 
 def parsing2(input):
     output = []
     c = input[1:-1]

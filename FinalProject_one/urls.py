@@ -30,6 +30,7 @@ urlpatterns = [
     path('show/reset', views.resetFunc),
     path('show/show', views.findFunc),
     path('receipt', views.receipt),
+    path('clear', views.clearFunc),
     #path('buy', views.buyFunc),
     
     
