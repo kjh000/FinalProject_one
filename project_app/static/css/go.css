@@ -1,5 +1,6 @@
 @charset "UTF-8";
 body {background-color:#ffc107;}
+.base {background-color:#fffaf0;}
 img {width :30%;height:30%;}
 .a{
 	height:2rem; 
@@ -7,7 +8,8 @@ img {width :30%;height:30%;}
 }
 .sticky{
 	position: sticky; 
-	background-color: rgba(250, 250, 250); 
+	background-color:#FF9900;
+	color:#ffffff;
 	width: 100%; 
 	height: 475px; 
 	top: 270px; 
