@@ -34,7 +34,7 @@
 		    </div>
 		</div>
 	</nav>
-	<div class="container rounded shadow bg-light">
+	<div class="container rounded shadow base">
 		<div class="row p-4">
 			<div class="col text-center ">
 				<h1><strong>{{irum}}</strong></h1>
@@ -42,9 +42,9 @@
 		</div>
 		<div class="row">
 		
-			<h3>연관상품</h3>
+			<h3><strong>연관상품</strong></h3>
 			{% for i in reco %}
-	       	
+	       	<div class="col">
 	            <form class="form col" action="show" name="frm" method="post">{% csrf_token %}
 	           	 	<input type="hidden" name="searchInput" id="searchInput" value="{{i}}" readonly/>
 	           	 	<input type="hidden" name = "products" value = "{{products}}"/>
@@ -54,11 +54,11 @@
 	                <input type="hidden" name = "g_tot" value = "{{g_tot}}"/>
 	                <input type="hidden" name = "f_tot" value = "{{f_tot}}"/>
 	                <input type="hidden" name = "searchLoc" value = "{{loc}}"/>
-	           	 	<button type="submit" class="btn btn-outline-warning mb-2"># {{i}}</button>
+	           	 	<button type="submit" class="btn btn-outline-warning">{{i}}</button>
 	           	 </form> 
-	        
+	        </div>
 	        {% endfor %}
-	     
+	     	<div class="col-6"></div>
 		</div>
 		<div class="row">
 	    	<hr/>
@@ -90,7 +90,7 @@
 										<input type="hidden" name="price" id="price" value="{{df.5}}" readonly/>
 										<input type="hidden" name = "searchLoc" value = "{{loc}}"/>
 										<input type="hidden" name = "searchInput" value = "{{irum}}"/>
-										<input class="btn btn-outline-warning" type="submit" value="담기" >
+										<input class="btn btn-warning" type="submit" value="담기" >
 									</form>						
 								</td>
 							</tr>
@@ -101,10 +101,10 @@
 			</div>
 			<div class="col-md-3 p-4">
 				<div class="row sticky shadow p-4 pb-4">
-					<h3>장바구니</h3>
+					<h3 class="text-center"><strong>장바구니</strong></h3>
 					<div class="basket">
 						
-						  <table class="table table-hover">
+						  <table class="table table-hover text-light">
 	                        <thead>
 	                            <tr>
 	                                <th>상품명</th>
@@ -115,7 +115,7 @@
 	                        {% if products %}
 	                            {% for pro in products %}
 	                            <tr>
-	                                <td>{{pro.name}}</td>
+	                                <td><strong>{{pro.name}}</strong></td>
 	                                <td>{{pro.price}}</td>
 	                            </tr>
 	                            {% endfor %}
@@ -136,7 +136,7 @@
 		                    <input type="hidden" name = "tot" value = "{{tot}}"/>
 		                    <input type="hidden" name = "g_tot" value = "{{g_tot}}"/>
 		                    <input type="hidden" name = "f_tot" value = "{{f_tot}}"/>
-		                    <button class="w-100 mb-2 btn btn-lg btn-outline-danger rounded-3" type="submit">비교하기</button>
+		                    <button class="w-100 mb-2 btn btn-warning btn-lg rounded-3" type="submit">비교하기</button>
 		               </form>
 					</div>
 				</div>

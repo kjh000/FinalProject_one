@@ -35,6 +35,13 @@ df_r.index = idx
 df_r.columns = idx
 
 def mainFunc(request):
+    if "prod" in request.session:
+        prodList = request.session['prod']
+        print(prodList)
+        del request.session['prod']
+    
+        
+    
     item=items
     return render(request,'main.html', {'item':item})
 
@@ -341,6 +348,24 @@ def craw_fast(item):
     else:
         return g_df.iloc[0]
 
+# def buyFunc(request):
+    #session = requests.session()
+    # if "prod" in request.session: #이전에 줬던 session과 키 동일하게 줘야함
+    #     prodList = request.session['prod']
+    #     #print(request.session['prod'])
+    #     print(prodList)
+    #     #print(session.cookies.get_dict())
+    #     del request.session['prod']
+    #     #print(request.session['prod'])
+    #     #print(session.cookies.get_dict())
+    #
+    # return render(request, "buy.html")
+    #if "prod" in request.session:
+    #    prodList = request.session['prod']
+    #    print(prodList)
+    #    del request.session['prod']
+    #item=items
+    #return render(request,'main.html', {'item':item})
 
 def receipt(request):
 
