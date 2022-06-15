@@ -14,9 +14,18 @@
 <link rel="stylesheet" type="text/css" href="/static/css/go.css?after">
 
 <script type="text/javascript">
-	//document.querySelector(".btn").addEventListener("click", (){
-
-	//})
+	window.onload=function(){
+		document.querySelector("#bt1").onclick = b1Func;
+		document.querySelector("#bt2").onclick = b2Func;
+	}
+	function b1Func(){
+		window.open("https://www.gmarket.co.kr/");
+		location.href="/";
+	}
+	function b2Func(){
+		window.open("http://rpp.gmarket.co.kr/smiledeliveryguide01");
+		location.href="/";
+	}
 </script>
 </head>
 <body>
@@ -96,7 +105,7 @@
                                     </tbody>
                                 </table>
                                 <!-- <button class="w-100 py-2 mb-2 btn btn-outline-dark rounded-3" type="submit">구매하러가기</button> -->
-								<a class="w-100 py-2 mb-2 btn btn-outline-dark rounded-3" href="buy">메인 페이지로</a>                            
+								<button class="w-100 py-2 mb-2 btn btn-outline-dark rounded-3" type="button" onclick="location.href='/'">메인 페이지로</button>                            
 							</div>
 						</div>
 					</div>
@@ -168,7 +177,8 @@
 			                        </tbody>
 			                    </table>
                                 <!-- <button class="w-100 py-2 mb-2 btn btn-outline-dark rounded-3" type="submit">구매하러가기</button> -->
-                            	<a class="w-100 py-2 mb-2 btn btn-outline-dark rounded-3" href="https://www.gmarket.co.kr/">G마켓 페이지로</a>
+                            	<!-- <a class="w-100 py-2 mb-2 btn btn-outline-dark rounded-3" id="b2" href="https://www.gmarket.co.kr/">G마켓 페이지로</a> -->
+                           		<button class="w-100 py-2 mb-2 btn btn-outline-dark rounded-3" type="button" id="bt1">G마켓 페이지로</button>
 							</div>
 						</div>
 					</div>
@@ -242,7 +252,8 @@
                                     </tbody>
                                 </table>
                                 <!-- <button class="w-100 py-2 mb-2 btn btn-outline-dark rounded-3" type="submit">구매하러가기</button> -->
-                            	<a class="w-100 py-2 mb-2 btn btn-outline-dark rounded-3" href="http://rpp.gmarket.co.kr/smiledeliveryguide01">새벽배송 페이지로</a>
+                            	<!-- <a class="w-100 py-2 mb-2 btn btn-outline-dark rounded-3" id="b3" href="http://rpp.gmarket.co.kr/smiledeliveryguide01">새벽배송 페이지로</a> -->
+                            	<button class="w-100 py-2 mb-2 btn btn-outline-dark rounded-3" type="button" id="bt2">새벽배송 페이지로</button>
 							</div>
 						</div>
 					</div>
