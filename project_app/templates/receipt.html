@@ -48,11 +48,11 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {% if products %}
-                                        {% for pro in products %}
+                                        {% if datas %}
+                                        {% for pro in datas %}
                                         <tr>
-                                            <td colspan="3"><em>{{pro.pname}}</em></h4></td>
-                                            <td colspan="1" class="text-center">{{pro.price}}</td>
+                                            <td colspan="3"><em>{{pro.b_pname}}</em></h4></td>
+                                            <td colspan="1" class="text-center">{{pro.b_price}}</td>
                                             
                                         </tr>
                                         {% endfor %}
@@ -124,11 +124,11 @@
 			                            </tr>
 			                        </thead>
 			                        <tbody>
-			                        	{% if g_products %}
-			                            {% for gpro in g_products %}
+			                        	{% if datas %}
+			                            {% for gpro in datas %}
 			                            <tr>
-			                                <td colspan="3"><em>{{gpro.pname}}</em></td>
-			                                <td colspan="1" class="text-center">{{gpro.price}}</td>
+			                                <td colspan="3"><em>{{gpro.g_pname}}</em></td>
+			                                <td colspan="1" class="text-center">{{gpro.g_price}}</td>
 			                            </tr>
 			                            {% endfor %}
 			                            {% else %}
@@ -197,11 +197,11 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {% if f_products %}
-                                        {% for fpro in f_products %}
+                                        {% if datas %}
+                                        {% for fpro in datas %}
                                         <tr>
-                                            <td colspan="3"><em>{{fpro.pname}}</em></h4></td>
-                                            <td colspan="1" class="text-center">{{fpro.price}}</td>
+                                            <td colspan="3"><em>{{fpro.f_pname}}</em></h4></td>
+                                            <td colspan="1" class="text-center">{{fpro.f_price}}</td>
                                             
                                         </tr>
                                         {% endfor %}

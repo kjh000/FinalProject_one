@@ -8,8 +8,11 @@ from urllib.request import urlopen
 from bs4 import BeautifulSoup
 import urllib.request as req
 from urllib import parse
-from project_app.models import Basket, Gbasket, Fbasket
+from project_app.models import Basket, Gbasket, Fbasket,Tbasket
 from django.db.models import Sum
+import time
+from multiprocessing import Pool
+from multiprocessing import Process
 
 # Create your views here.
 items=['간장', '계란', '고추장', '과자', '기저귀', '껌', '냉동만두', '된장', '두루마리화장지', '두부', '라면', '마요네즈', '맛김', '맛살', '맥주', '밀가루', '분유', '사이다', '생리대', '생수', '샴푸', '설탕', '세탁세제', '소주', '시리얼', '식용유', '쌈장', '아이스크림', '어묵', '오렌지주스', '우유', '즉석밥', '참기름', '참치 캔', '커피', '케첩', '콜라', '햄']
@@ -50,7 +53,7 @@ def mainFunc(request):
 def findFunc(request):
     if request.method == 'POST':
        
-
+ 
         productss = []
         g_productss = []
         f_productss = []
@@ -62,7 +65,7 @@ def findFunc(request):
         g_tot = request.POST.get("g_tot")
         f_tot = request.POST.get("f_tot")
         
-        datas = Basket.objects.all()
+        datas = Tbasket.objects.all()
         
         if products:
             productss = parsing2(products)
@@ -168,13 +171,16 @@ def insertFunc(request):
 
 def basketFunc(request):
 
+    start = time.time()
     name = request.POST.get("name")
     price = request.POST.get("price")
     price = int(price)
-    
-    
+        
     g_df = craw_gmarket(name)
     f_df = craw_fast(name)
+
+    mid = time.time()
+    print('중간 실행 시간 : ',mid-start)
 
     if g_df.empty:
         g_product = {"name" : 'None',"price":0}
@@ -184,12 +190,6 @@ def basketFunc(request):
         g_df[1] = int(g_df[1])        
         g_product = {"name" : g_df[0],"price":g_df[1]}
         
-        Gbasket(
-        pname = g_df[0],
-        price = g_df[1]
-            ).save()
-
-######################
     if f_df.empty:
         f_product = {"name" : 'None',"price":0}
         
@@ -197,26 +197,18 @@ def basketFunc(request):
         f_df[1] = f_df[1].replace(',',"")
         f_df[1] = int(f_df[1])
         f_product = {"name" : f_df[0],"price":f_df[1]}
-        
-        Fbasket(
-        pname = f_df[0],
-        price = f_df[1]
+
+
+    datas = Tbasket.objects.all()
     
+    Tbasket(
+        b_pname = name,
+        b_price = price,
+        g_pname = g_product['name'],
+        g_price = g_product['price'],
+        f_pname =  f_product['name'],
+        f_price =  f_product['price']
         ).save()
-
-
-    datas = Basket.objects.all()
-    Basket(
-        pname =name,
-        price = price
-        ).save()
-    
-
-    product = {"name" : name, "price" : price}
-    productList = []
-    gmarketList = [] # 지마켓 최저가 장바구니
-    fastList = [] # 당일 배송 장바구니
-    
     irum = request.POST.get("searchInput")   
     loc=request.POST.get("searchLoc")
    
@@ -259,6 +251,8 @@ def basketFunc(request):
     context['loc'] = loc
     context['datas'] = datas
 
+    end = time.time()
+    print('basket 실행 시간 : ',end-start)
     return render(request, 'finder.html', context)
 
 
@@ -293,13 +287,16 @@ def craw_gmarket(item):
     for price in prices:
         gm_prices.append(price.text.strip())
     
+    
     g_df = pd.DataFrame({'제품명':gm_names,'가격':gm_prices})
     
     g_df = g_df.sort_values('가격')
+    
     if g_df.empty:
         return g_df
     else:
         return g_df.iloc[0]
+
 
 
 def craw_fast(item):
@@ -307,7 +304,6 @@ def craw_fast(item):
     item = parse.quote(item)
     url = "https://browse.gmarket.co.kr/search?keyword="
     url = url+item+"&t=e&tf=e:128935607"
-
     html = urlopen(url)
     
     soup = BeautifulSoup(html,'html.parser')
@@ -325,45 +321,36 @@ def craw_fast(item):
     for price in prices:
         gm_prices.append(price.text.strip())
     
-    g_df = pd.DataFrame({'제품명':gm_names,'가격':gm_prices})
+    f_df = pd.DataFrame({'제품명':gm_names,'가격':gm_prices})
     
-    g_df = g_df.sort_values('가격')
+    f_df = f_df.sort_values('가격')
     
-    if g_df.empty:
-        return g_df
+    if f_df.empty:
+        return f_df
     else:
-        return g_df.iloc[0]
-
-
+        return f_df.iloc[0]
+        
 def receipt(request):
 
-
-    datas = Basket.objects.all()
-    gdatas = Gbasket.objects.all()
-    fdatas = Fbasket.objects.all()
-    
-    sum = Basket.objects.aggregate(Sum('price'))
-    gsum = Gbasket.objects.aggregate(Sum('price'))
-    fsum = Fbasket.objects.aggregate(Sum('price'))
-    
     context ={}
-    context['products'] = datas
-    context['g_products'] = gdatas
-    context['f_products'] = fdatas
-    context['tot'] = sum['price__sum']
-    context['g_tot'] = gsum['price__sum']
-    context['f_tot'] = fsum['price__sum']
+    datas = Tbasket.objects.all()
+    sum = Tbasket.objects.aggregate(Sum('b_price'))
+    gsum = Tbasket.objects.aggregate(Sum('g_price'))
+    fsum = Tbasket.objects.aggregate(Sum('f_price'))
     
-    if gsum['price__sum']:
-        context['g_tot3'] = gsum['price__sum']+3000
+    context['datas'] = datas
+    context['tot'] = sum['b_price__sum']
+    context['g_tot'] = gsum['g_price__sum']
+    context['f_tot'] = fsum['f_price__sum']
+    
+    if gsum['g_price__sum']:
+        context['g_tot3'] = gsum['g_price__sum']+3000
     else:
         context['g_tot3'] = 3000
-    if fsum['price__sum']:
-        context['f_tot3'] = fsum['price__sum']+3000
+    if fsum['f_price__sum']:
+        context['f_tot3'] = fsum['f_price__sum']+3000
     else:
         context['f_tot'] = 3000
-    
-    
     
     return render(request,'receipt.html',context)
 
@@ -413,9 +400,10 @@ def clearFunc(request):
     irum = request.POST.get("searchInput")   
     loc=request.POST.get("searchLoc")
    
-    Basket.objects.all().delete()
-    Gbasket.objects.all().delete()
-    Fbasket.objects.all().delete()
+    # Basket.objects.all().delete()
+    # Gbasket.objects.all().delete()
+    # Fbasket.objects.all().delete()
+    Tbasket.objects.all().delete()
     
     
     dfl = df[df['분류'].str.contains(irum) & df['지역'].str.contains(loc)].values.tolist()
